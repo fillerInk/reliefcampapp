@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
                     message = "Please enter Username\n";
                 }
                 if (password.equals("")) {
-                    message += "Please enter password\n";
+                    message += "Please enter password";
                 }
                 if (!message.equals("")) {
-                    Toast.makeText(MainActivity.this, "Username is required", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 UserLogin user = new UserLogin(username, password);

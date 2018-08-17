@@ -12,12 +12,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import xyz.appmaker.keralarescue.Tools.PreferensHandler;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
 /**
@@ -34,20 +43,42 @@ public class LoginInstrumentedTest {
 
     @Test
     public void loginErrorMessage() {
+        PreferensHandler handler = new PreferensHandler(InstrumentationRegistry.getTargetContext().getApplicationContext());
+        handler.setUserToken("");
         onView(withId(R.id.loginBtn)).perform(click());
+
 
     }
 
     @Test
-    public void clickSignUpButton_validUsernamePassword() {
+    public void clickSignInButton_validUsernamePassword() {
         //locate and click on the login button
 
         onView(withId(R.id.username)).perform(clearText(), typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(clearText(), typeText("test12345"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
 
+        onView(withText("Login successful"))
+                .inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
 
-        //check if the sign up screen is displayed by asserting that the first name edittext is displayed
-//        onView(withId(R.id.edit_text_first_name)).check(matches(allOf(isDescendantOfA(withId(R.id.layout_sign_up)), isDisplayed())));
+        PreferensHandler handler = new PreferensHandler(InstrumentationRegistry.getTargetContext().getApplicationContext());
+        handler.setUserToken("");
+
+    }
+
+    @Test
+    public void clickSignInButton_InvalidUsernamePassword() {
+        //locate and click on the login button
+
+        onView(withId(R.id.username)).perform(clearText(), typeText("test123"), closeSoftKeyboard());
+        onView(withId(R.id.password)).perform(clearText(), typeText("test12345"), closeSoftKeyboard());
+        onView(withId(R.id.loginBtn)).perform(click());
+
+        onView(withText("Username/Password is incorrect"))
+                .inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+
+
     }
 }
