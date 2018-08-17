@@ -37,7 +37,6 @@
                 android:id="@+id/camp_spinner"
                 android:layout_below="@+id/camp_title"
                 android:layout_marginTop="10dp"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -46,7 +45,6 @@
                 android:layout_below="@+id/camp_spinner"
                 android:id="@+id/name"
                 android:layout_marginTop="20dp"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name"
