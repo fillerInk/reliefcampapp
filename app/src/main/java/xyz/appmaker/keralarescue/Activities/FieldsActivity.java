@@ -1,5 +1,6 @@
 package xyz.appmaker.keralarescue.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,8 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
@@ -26,14 +29,16 @@ public class FieldsActivity extends AppCompatActivity {
             "Thiruvananthapuram", "Kollam", "Pathanamthitta", "Alappuzha", "Kottayam", "Idukki", "Ernakulam", "Thrissur", "Palakkad", "Malappuram", "Kozhikode", "Wayanad", "Kannur", "Kasaragod"
     };
     PreferensHandler pref;
+    Button submitBtn;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fields);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        pref = new PreferensHandler(getApplicationContext());
+        context = getApplicationContext();
+        pref = new PreferensHandler(context);
 
         // Gender spinner
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(this,
@@ -87,8 +92,31 @@ public class FieldsActivity extends AppCompatActivity {
         addressEdt = (EditText) findViewById(R.id.address);
         mobileEdt = (EditText) findViewById(R.id.mobile);
         notesEdt = (EditText) findViewById(R.id.note);
+        submitBtn = (Button ) findViewById(R.id.submit);
 
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validateData()){
+
+                }
+
+            }
+        });
 
     }
+
+
+
+    public boolean validateData() {
+        if(nameEdt.getText().equals("") || ageEdt.getText().equals("") || addressEdt.getText().equals("") || mobileEdt.getText().equals("") || notesEdt.getText().equals("")){
+            Toast.makeText(context, "Please enter all fields",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 
 }

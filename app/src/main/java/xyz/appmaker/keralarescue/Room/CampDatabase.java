@@ -7,8 +7,9 @@ import android.content.Context;
 
 import xyz.appmaker.keralarescue.Room.Camp.CampNameDao;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
+import xyz.appmaker.keralarescue.Room.PersonData.PersonDataEntity;
 
-@Database(entities = {CampNames.class}, version = 1)
+@Database(entities = {CampNames.class, PersonDataEntity.class}, version = 1)
 public abstract class CampDatabase extends RoomDatabase {
     private static CampDatabase INSTANCE;
 
