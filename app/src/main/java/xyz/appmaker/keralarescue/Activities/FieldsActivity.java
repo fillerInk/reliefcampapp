@@ -6,11 +6,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import xyz.appmaker.keralarescue.R;
+import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class FieldsActivity extends AppCompatActivity {
 
@@ -20,6 +22,10 @@ public class FieldsActivity extends AppCompatActivity {
     String[] arrayGender = new String[] {
             "Male", "Female"
     };
+    String[] arrayDistricts = new String[] {
+            "Thiruvananthapuram", "Kollam", "Pathanamthitta", "Alappuzha", "Kottayam", "Idukki", "Ernakulam", "Thrissur", "Palakkad", "Malappuram", "Kozhikode", "Wayanad", "Kannur", "Kasaragod"
+    };
+    PreferensHandler pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +33,54 @@ public class FieldsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        pref = new PreferensHandler(getApplicationContext());
 
+        // Gender spinner
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arrayGender);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpn = (Spinner) findViewById(R.id.gender);
         genderSpn.setAdapter(genderAdapter);
+
+
+        genderSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // Districts Spinner
+        ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arrayDistricts);
+        districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        districtSpn = (Spinner) findViewById(R.id.district);
+
+        districtSpn.setAdapter(districtAdapter);
+
+        if(pref != null)
+            districtSpn.setSelection(pref.getDistrictDef());
+
+        districtSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(pref != null)
+                    pref.setDistrictDef(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
 
         nameEdt = (EditText) findViewById(R.id.name);
         ageEdt = (EditText) findViewById(R.id.age);
