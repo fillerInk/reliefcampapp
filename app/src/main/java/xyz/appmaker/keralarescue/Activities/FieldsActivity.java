@@ -20,12 +20,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import xyz.appmaker.keralarescue.AppController;
 import xyz.appmaker.keralarescue.Models.Gender;
 import xyz.appmaker.keralarescue.Models.States;
 import xyz.appmaker.keralarescue.R;
+import xyz.appmaker.keralarescue.Room.Camp.CampNames;
 import xyz.appmaker.keralarescue.Room.CampDatabase;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataDao;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataEntity;
+import xyz.appmaker.keralarescue.Tools.APIService;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class FieldsActivity extends AppCompatActivity {
@@ -47,6 +53,9 @@ public class FieldsActivity extends AppCompatActivity {
     String genderSelectedValue = "0";
 
 
+    APIService apiService;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +65,7 @@ public class FieldsActivity extends AppCompatActivity {
         context = getApplicationContext();
         pref = new PreferensHandler(context);
         dbInstance = CampDatabase.getDatabase(context);
-
+        apiService = AppController.getRetrofitInstance();
 
 
 
@@ -146,10 +155,11 @@ public class FieldsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e("Tag","state code, gender code " + stateSelectedValue+"  - "+genderSelectedValue);
+                updateCamps();
                 if(validateData()){
                     PersonDataEntity personDataModel = new PersonDataEntity(nameEdt.getText().toString(), "123",ageEdt.getText().toString(), "male",
                             addressEdt.getText().toString(),"EKM", mobileEdt.getText().toString(), notesEdt.getText().toString(), "0");
-                    insetDb(personDataModel);
+                    insetPersonDb(personDataModel);
                 }
             }
         });
@@ -169,7 +179,7 @@ public class FieldsActivity extends AppCompatActivity {
         }
     }
 
-    public  void insetDb(final PersonDataEntity var){
+    public  void insetPersonDb(final PersonDataEntity var){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -178,5 +188,44 @@ public class FieldsActivity extends AppCompatActivity {
         }) .start();
     }
 
+
+    public void updateCamps(){
+        Call<List<CampNames>> response = apiService.getCampList("JWT " + pref.getUserToken());
+        response.enqueue(new Callback<List<CampNames>>() {
+            @Override
+            public void onResponse(Call<List<CampNames>> call, Response<List<CampNames>> response) {
+                Log.e("TAG", "success response ");
+
+                List<CampNames> items = response.body();
+
+                if(items!=null && items.size()>0) {
+                    String name = items.get(0).getName();
+                    Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
+                    insetCampDb(items);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CampNames>> call, Throwable t) {
+                Log.e("TAG", "fail response ");
+
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void insetCampDb(final List<CampNames> var){
+        Log.e("TAG", "insetCampDb ");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (CampNames item: var) {
+                    Log.e("TAG", "insertCamp - "+item.getName());
+                    dbInstance.campDao().insert(item);
+                }
+            }
+        }) .start();
+    }
 
 }

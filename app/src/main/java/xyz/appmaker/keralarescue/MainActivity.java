@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent fieldClass = new Intent(MainActivity.this, FieldsActivity.class);
+                startActivity(fieldClass);
+            }
+        });
         prefs = new PreferensHandler(getApplicationContext());
         String userToken = prefs.getUserToken();
 
@@ -85,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(fieldsAct);
                             finish();
                         } else {
+                            Log.e("TAG","resp "+response.message());
                             Toast.makeText(getApplicationContext(), "Username/Password is incorrect", Toast.LENGTH_LONG).show();
                         }
 

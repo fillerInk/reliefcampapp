@@ -15,15 +15,15 @@ public class CampNames {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "camp_id")
-    private String campId;
+    private int id;
 
-    public CampNames(String name, String campId) {
+    public CampNames(String name, int id) {
         this.name = name;
-        this.campId = campId;
+        this.id = id;
 
     }
 
     public String getName(){return this.name;}
-    public String getCampId(){return this.campId;}
+    public int getId(){return this.id;}
 
 }
