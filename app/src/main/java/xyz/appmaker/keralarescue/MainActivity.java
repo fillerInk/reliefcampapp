@@ -21,27 +21,30 @@ import xyz.appmaker.keralarescue.Activities.FieldsActivity;
 import xyz.appmaker.keralarescue.Models.UserLogin;
 import xyz.appmaker.keralarescue.Models.UserResponse;
 import xyz.appmaker.keralarescue.Tools.APIService;
+import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText usernameEditText;
     EditText passwordEditText;
+    PreferensHandler prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent fieldsAct = new Intent(MainActivity.this, FieldsActivity.class);
-                startActivity(fieldsAct);
-            }
-        });
+        prefs = new PreferensHandler(getApplicationContext());
+        String userToken = prefs.getUserToken();
+
+        if (!userToken.equals("")) {
+            Intent fieldsAct = new Intent(MainActivity.this, FieldsActivity.class);
+            startActivity(fieldsAct);
+            finish();
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.1.108:8000")
@@ -64,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
                     message = "Please enter Username\n";
                 }
                 if (password.equals("")) {
-                    message = "Please enter password\n";
+                    message += "Please enter password\n";
                 }
                 if (!message.equals("")) {
-                    Toast.makeText(MainActivity.this, "Username is required", Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this, "Username is required", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 UserLogin user = new UserLogin(username, password);
@@ -75,7 +78,16 @@ public class MainActivity extends AppCompatActivity {
                 userResponseCall.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        Toast.makeText(getApplicationContext(), response.body().token, Toast.LENGTH_LONG).show();
+                        if (response.isSuccessful()) {
+                            prefs.setUserToken(response.body().token);
+                            Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
+                            Intent fieldsAct = new Intent(MainActivity.this, FieldsActivity.class);
+                            startActivity(fieldsAct);
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Username/Password is incorrect", Toast.LENGTH_LONG).show();
+                        }
+
                     }
 
                     @Override

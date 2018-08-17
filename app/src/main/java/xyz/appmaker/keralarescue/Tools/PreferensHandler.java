@@ -13,7 +13,7 @@ public class PreferensHandler {
     private static final String PREF_NAME = "app_pref";
     final String district_def = "district_def";
     final String camp_def = "camp_def";
-
+    final String userTokenKey = "user_token";
 
 
     @SuppressLint("CommitPrefEdits")
@@ -23,12 +23,22 @@ public class PreferensHandler {
         editor = pref.edit();
     }
 
-    public void setDistrictDef(int var){
+    public void setDistrictDef(int var) {
         editor.putInt(district_def, var);
         editor.commit();
     }
 
-    public int getDistrictDef(){
+    public int getDistrictDef() {
         return pref.getInt(district_def, 0);
     }
+
+    public String getUserToken() {
+        return pref.getString(userTokenKey, "");
+    }
+
+    public void setUserToken(String userToken) {
+        editor.putString(userTokenKey, userToken);
+        editor.commit();
+    }
+
 }
