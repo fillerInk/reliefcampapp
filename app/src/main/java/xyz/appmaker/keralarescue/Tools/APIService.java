@@ -1,15 +1,24 @@
 package xyz.appmaker.keralarescue.Tools;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import xyz.appmaker.keralarescue.Models.UserLogin;
 import xyz.appmaker.keralarescue.Models.UserResponse;
+import xyz.appmaker.keralarescue.Room.Camp.CampNames;
+import xyz.appmaker.keralarescue.Room.CampDatabase;
 
 public interface APIService {
     @POST("api/1/rest-auth/login/")
     Call<UserResponse> login(@Body UserLogin userLogin);
-//    Call<UserResponse> login(@Field("username") String username, @Field("password") String password);
+
+    @GET("api/1/camps/")
+    Call<List<CampNames>> getCampList(@Header("Authorization") String authorization);
+
+
 }
