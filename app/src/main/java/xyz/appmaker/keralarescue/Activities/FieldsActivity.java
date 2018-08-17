@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xyz.appmaker.keralarescue.Models.Gender;
 import xyz.appmaker.keralarescue.Models.States;
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Room.CampDatabase;
-import xyz.appmaker.keralarescue.Room.CampDatabase_Impl;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataDao;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataEntity;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
@@ -33,25 +33,18 @@ public class FieldsActivity extends AppCompatActivity {
 
     EditText nameEdt, ageEdt, addressEdt, mobileEdt, notesEdt;
     Spinner campNameSpn, genderSpn, districtSpn;
-    String[] arrayGender = new String[] {
-            "Male", "Female"
-    };
-    String[] arrayDistricts = new String[] {
-            "Thiruvananthapuram", "Kollam", "Pathanamthitta", "Alappuzha", "Kottayam", "Idukki", "Ernakulam", "Thrissur", "Palakkad", "Malappuram", "Kozhikode", "Wayanad", "Kannur", "Kasaragod"
-    };
-
     HashMap<String, String> distMap = new HashMap<>();
     PreferensHandler pref;
     Button submitBtn;
     Context context;
     private  PersonDataDao personDao;
-   // private WordViewModel mWordViewModel;
-
     CampDatabase dbInstance;
 
     ArrayList<States>  statesList = new ArrayList<>();
+    ArrayList<Gender>  genderList = new ArrayList<>();
 
     String stateSelectedValue = "tvm";
+    String genderSelectedValue = "0";
 
 
     @Override
@@ -63,9 +56,19 @@ public class FieldsActivity extends AppCompatActivity {
         context = getApplicationContext();
         pref = new PreferensHandler(context);
         dbInstance = CampDatabase.getDatabase(context);
+
+
+
+
+
+
         // Gender spinner
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arrayGender);
+        genderList.add(new Gender("0","Male"));
+        genderList.add(new Gender("1","Female"));
+        genderList.add(new Gender("2","Others"));
+
+        ArrayAdapter<Gender> genderAdapter = new ArrayAdapter<Gender>(this,
+                android.R.layout.simple_spinner_item, genderList);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpn = (Spinner) findViewById(R.id.gender);
         genderSpn.setAdapter(genderAdapter);
@@ -75,6 +78,9 @@ public class FieldsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //stateSelectedValue
+                Gender gender = (Gender) parent.getSelectedItem();
+
+                genderSelectedValue = gender.getId();
 
             }
 
@@ -118,7 +124,6 @@ public class FieldsActivity extends AppCompatActivity {
 
                 States states = (States) parent.getSelectedItem();
                 stateSelectedValue = states.getId();
-
             }
 
             @Override
@@ -140,10 +145,10 @@ public class FieldsActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Tag","state code " + stateSelectedValue);
+                Log.e("Tag","state code, gender code " + stateSelectedValue+"  - "+genderSelectedValue);
                 if(validateData()){
                     PersonDataEntity personDataModel = new PersonDataEntity(nameEdt.getText().toString(), "123",ageEdt.getText().toString(), "male",
-                            addressEdt.getText().toString(),"EKM", mobileEdt.getText().toString(), notesEdt.getText().toString());
+                            addressEdt.getText().toString(),"EKM", mobileEdt.getText().toString(), notesEdt.getText().toString(), "0");
                     insetDb(personDataModel);
                 }
             }
