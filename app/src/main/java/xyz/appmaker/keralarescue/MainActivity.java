@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import retrofit2.Retrofit;
 import xyz.appmaker.keralarescue.Activities.FieldsActivity;
+import xyz.appmaker.keralarescue.Tools.APIService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +29,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent fieldsAct = new Intent(MainActivity.this, FieldsActivity.class);
                 startActivity(fieldsAct);
+            }
+        });
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .build();
+
+        APIService service = retrofit.create(APIService.class);
+
+        findViewById(R.id.loginBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
