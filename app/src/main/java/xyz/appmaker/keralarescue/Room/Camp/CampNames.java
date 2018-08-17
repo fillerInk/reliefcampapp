@@ -1,4 +1,4 @@
-package xyz.appmaker.keralarescue.Room;
+package xyz.appmaker.keralarescue.Room.Camp;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -8,15 +8,21 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "camp_names")
 public class CampNames {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
     @NonNull
     @ColumnInfo(name = "name")
     private String name;
 
-    public CampNames(String name) {this.name = name;}
+    @NonNull
+    @ColumnInfo(name = "camp_id")
+    private String campId;
+
+    public CampNames(String name, String campId) {
+        this.name = name;
+        this.campId = campId;
+
+    }
 
     public String getName(){return this.name;}
+    public String getCampId(){return this.campId;}
 
 }
