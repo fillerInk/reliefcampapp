@@ -34,10 +34,13 @@ public class PersonDataEntity {
     @ColumnInfo(name = "note")
     public String note;
 
+    @ColumnInfo(name = "status")
+    public String status;
+
     public PersonDataEntity() {
     }
 
-    public PersonDataEntity(String name, String campName, String age, String gender, String address, String district, String mobile, String note) {
+    public PersonDataEntity(String name, String campName, String age, String gender, String address, String district, String mobile, String note, String status) {
         this.name = name;
         this.campId = campName;
         this.age = age;
@@ -46,7 +49,7 @@ public class PersonDataEntity {
         this.district = district;
         this.mobile = mobile;
         this.note = note;
-
+        this.status = status;
     }
 
 
