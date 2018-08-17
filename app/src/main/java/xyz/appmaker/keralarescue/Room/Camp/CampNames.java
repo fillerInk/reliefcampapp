@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 
 @Entity(tableName = "camp_names")
 public class CampNames {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     @NonNull
     @ColumnInfo(name = "name")

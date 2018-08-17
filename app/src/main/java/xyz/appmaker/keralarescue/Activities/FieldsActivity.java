@@ -6,11 +6,20 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import xyz.appmaker.keralarescue.R;
 
 public class FieldsActivity extends AppCompatActivity {
 
+
+    EditText nameEdt, ageEdt, addressEdt, mobileEdt, notesEdt;
+    Spinner campNameSpn, genderSpn, districtSpn;
+    String[] arrayGender = new String[] {
+            "Male", "Female"
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,14 +27,20 @@ public class FieldsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arrayGender);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpn = (Spinner) findViewById(R.id.gender);
+        genderSpn.setAdapter(genderAdapter);
+
+        nameEdt = (EditText) findViewById(R.id.name);
+        ageEdt = (EditText) findViewById(R.id.age);
+        addressEdt = (EditText) findViewById(R.id.address);
+        mobileEdt = (EditText) findViewById(R.id.mobile);
+        notesEdt = (EditText) findViewById(R.id.note);
+
+
     }
 
 }
