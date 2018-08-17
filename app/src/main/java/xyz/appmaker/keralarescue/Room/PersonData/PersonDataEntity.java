@@ -8,31 +8,34 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "person_data")
 public class PersonDataEntity {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    public int id;
 
     @ColumnInfo(name = "name")
-    private String name;
+    public String name;
 
     @ColumnInfo(name = "camp_id")
-    private String campId;
+    public String campId;
 
     @ColumnInfo(name = "age")
-    private String age;
+    public String age;
 
     @ColumnInfo(name = "gender")
-    private String gender;
+    public String gender;
 
     @ColumnInfo(name = "address")
-    private String address;
+    public String address;
 
     @ColumnInfo(name = "district")
-    private String district;
+    public String district;
 
     @ColumnInfo(name = "mobile")
-    private String mobile;
+    public String mobile;
 
     @ColumnInfo(name = "note")
-    private String note;
+    public String note;
+
+    public PersonDataEntity() {
+    }
 
     public PersonDataEntity(String name, String campName, String age, String gender, String address, String district, String mobile, String note) {
         this.name = name;
@@ -45,15 +48,6 @@ public class PersonDataEntity {
         this.note = note;
 
     }
-
-    public String getName(){return this.name;}
-    public String getCampId(){return this.campId;}
-    public String getAge(){return this.age;}
-    public String getGender(){return this.gender;}
-    public String getAddress(){return this.address;}
-    public String getDistrict(){return this.district;}
-    public String getMobile(){return this.mobile;}
-    public String getNote(){return this.note;}
 
 
 }
