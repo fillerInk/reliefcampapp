@@ -138,7 +138,7 @@ public class FieldsActivity extends AppCompatActivity {
         ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
                 android.R.layout.simple_spinner_item, statesList);
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        districtSpn = (Spinner) findViewById(R.id.district);
+//        districtSpn = (Spinner) findViewById(R.id.district);
 
         districtSpn.setAdapter(districtAdapter);
 
@@ -347,7 +347,7 @@ public class FieldsActivity extends AppCompatActivity {
     }
 
     public void updateCamps() {
-        Call<List<CampNames>> response = apiService.getCampList(authToken());
+        Call<List<CampNames>> response = apiService.getCampList(authToken(), "");
         response.enqueue(new Callback<List<CampNames>>() {
             @Override
             public void onResponse(Call<List<CampNames>> call, Response<List<CampNames>> response) {

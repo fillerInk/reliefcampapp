@@ -21,12 +21,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import xyz.appmaker.keralarescue.Adapters.CampRecycleViewAdapter;
+import xyz.appmaker.keralarescue.AppController;
 import xyz.appmaker.keralarescue.Interfaces.RecycleItemClickListener;
 import xyz.appmaker.keralarescue.MainActivity;
 import xyz.appmaker.keralarescue.Models.States;
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
+import xyz.appmaker.keralarescue.Room.CampDatabase;
+import xyz.appmaker.keralarescue.Tools.APIService;
 import xyz.appmaker.keralarescue.Tools.Misc;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
@@ -41,36 +47,35 @@ public class CampsActivity extends AppCompatActivity {
     Spinner districtSpinner;
     PreferensHandler pref;
     Context context;
+    private APIService apiService;
+    private CampDatabase dbInstance;
+    String districtSelectedValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camps);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         pref = new PreferensHandler(context);
-        districtSpinner = (Spinner) findViewById(R.id.spinner_district);
+        districtSpinner = findViewById(R.id.spinner_district);
         ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
                 android.R.layout.simple_spinner_item, Misc.getStates());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        dbInstance = CampDatabase.getDatabase(context);
         districtSpinner.setAdapter(districtAdapter);
+        apiService = AppController.getRetrofitInstance();
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               Intent actField = new Intent(CampsActivity.this, FieldsActivity.class);
-               startActivity(actField);
-            }
-        });
 
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // TO-DO
                 // make network call for camp list
+                States states = (States) parent.getSelectedItem();
+                districtSelectedValue = states.getId();
+                updateCamps(districtSelectedValue);
             }
 
             @Override
@@ -78,15 +83,10 @@ public class CampsActivity extends AppCompatActivity {
 
             }
         });
-        campNames.add(new CampNames("Camp 1 ",1, "ekm"));
-        campNames.add(new CampNames("Camp 2 ",2, "ekm"));
-        campNames.add(new CampNames("Camp 3 ",3, "ekm"));
-        campNames.add(new CampNames("Camp 4 ",4, "ekm"));
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.camp_recycler_view);
+        mRecyclerView = findViewById(R.id.camp_recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
@@ -96,14 +96,70 @@ public class CampsActivity extends AppCompatActivity {
         recycleItemClickListener = new RecycleItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-               // Log.e("TAG","onItem final call"+position);
+                // Log.e("TAG","onItem final call"+position);
                 Intent fieldIntent = new Intent(CampsActivity.this, FieldsActivity.class);
                 startActivity(fieldIntent);
             }
         };
         // specify an adapter (see also next example)
-        mAdapter = new CampRecycleViewAdapter(campNames, recycleItemClickListener);
-        mRecyclerView.setAdapter(mAdapter);
+        loadCamps("tvm");
+    }
+
+
+    public void updateCamps(final String district) {
+        Call<List<CampNames>> response = apiService.getCampList(authToken(), district);
+        response.enqueue(new Callback<List<CampNames>>() {
+            @Override
+            public void onResponse(Call<List<CampNames>> call, Response<List<CampNames>> response) {
+                Log.e("TAG", "success response ");
+
+                List<CampNames> items = response.body();
+
+                if (items != null && items.size() > 0) {
+                    String name = items.get(0).getName();
+                    Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
+                    insetCampDb(items);
+                }
+                loadCamps(district);
+            }
+
+            @Override
+            public void onFailure(Call<List<CampNames>> call, Throwable t) {
+                Log.e("TAG", "fail response ");
+
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void insetCampDb(final List<CampNames> var) {
+        Log.e("TAG", "insetCampDb ");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dbInstance.campDao().insertCapms(var);
+
+            }
+        }).start();
+    }
+
+    public void loadCamps(final String district) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                campNames = dbInstance.campDao().getAllCampsByDistrict(district);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter = new CampRecycleViewAdapter(campNames, recycleItemClickListener);
+                        mRecyclerView.setAdapter(mAdapter);
+
+                    }
+                });
+            }
+        }).start();
+
     }
 
 
@@ -112,6 +168,10 @@ public class CampsActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_camp, menu);
         return true;
+    }
+
+    public String authToken() {
+        return "JWT " + pref.getUserToken();
     }
 
     @Override
@@ -133,8 +193,8 @@ public class CampsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public  void logoutUser(){
-        if(pref!= null){
+    public void logoutUser() {
+        if (pref != null) {
             pref.setUserToken("");
             Intent actLogin = new Intent(CampsActivity.this, MainActivity.class);
             startActivity(actLogin);

@@ -22,4 +22,7 @@ public interface CampNameDao {
     @Query("SELECT * from camp_names ORDER BY name ASC")
     List<CampNames> getAllCamps();
 
+    @Query("SELECT * from camp_names WHERE district = :district ORDER BY name ASC")
+    List<CampNames> getAllCampsByDistrict(String district);
+
 }
