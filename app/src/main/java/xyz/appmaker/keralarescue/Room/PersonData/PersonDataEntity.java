@@ -14,7 +14,7 @@ public class PersonDataEntity {
     public String name;
 
     @ColumnInfo(name = "camp_id")
-    public String campId;
+    public String camped_at;
 
     @ColumnInfo(name = "age")
     public String age;
@@ -42,7 +42,7 @@ public class PersonDataEntity {
 
     public PersonDataEntity(String name, String campName, String age, String gender, String address, String district, String mobile, String note, String status) {
         this.name = name;
-        this.campId = campName;
+        this.camped_at = campName;
         this.age = age;
         this.gender = gender;
         this.address = address;

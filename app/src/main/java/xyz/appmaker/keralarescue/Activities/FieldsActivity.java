@@ -25,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import xyz.appmaker.keralarescue.AppController;
 import xyz.appmaker.keralarescue.Models.Gender;
+import xyz.appmaker.keralarescue.Models.PersonsResponse;
 import xyz.appmaker.keralarescue.Models.States;
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
@@ -50,8 +51,10 @@ public class FieldsActivity extends AppCompatActivity {
     ArrayList<Gender> genderList = new ArrayList<>();
     ArrayList<CampNames> campList = new ArrayList<>();
 
-    String stateSelectedValue = "tvm";
+    String districtSelectedValue = "tvm";
     String genderSelectedValue = "0";
+    String campSelectedValue = "0";
+
 
     APIService apiService;
 
@@ -132,7 +135,7 @@ public class FieldsActivity extends AppCompatActivity {
                     pref.setDistrictDef(position);
 
                 States states = (States) parent.getSelectedItem();
-                stateSelectedValue = states.getId();
+                districtSelectedValue = states.getId();
             }
 
             @Override
@@ -152,16 +155,16 @@ public class FieldsActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Tag", "state code, gender code " + stateSelectedValue + "  - " + genderSelectedValue);
+                Log.e("Tag", "state code, gender code " + districtSelectedValue + "  - " + genderSelectedValue);
 
                 if (validateData()) {
                     PersonDataEntity personDataModel = new PersonDataEntity(
                             nameEdt.getText().toString(),
-                            "123",
+                            campSelectedValue,
                             ageEdt.getText().toString(),
-                            "male",
+                            genderSelectedValue,
                             addressEdt.getText().toString(),
-                            "EKM",
+                            districtSelectedValue,
                             mobileEdt.getText().toString(),
                             notesEdt.getText().toString(),
                             "0");
@@ -172,6 +175,57 @@ public class FieldsActivity extends AppCompatActivity {
         updateCamps();
         loadCamps();
 
+        syncDB();
+    }
+
+
+    public void syncDB() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<PersonDataEntity> personDataUnsynced = dbInstance.personDataDao().getUnSyncedPersons();
+                apiService.addPersons(authToken(), personDataUnsynced).enqueue(new Callback<PersonsResponse>() {
+                    @Override
+                    public void onResponse(Call<PersonsResponse> call, Response<PersonsResponse> response) {
+
+                        if (response.isSuccessful()) {
+                            final int[] updateIds = new int[200];
+                            int index = 0;
+                            for (PersonDataEntity personDataEntity : personDataUnsynced) {
+                                updateIds[index++] = personDataEntity.id;
+                            }
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dbInstance.personDataDao().updateStatus(updateIds, "1");
+                                }
+                            }).start();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Some error while saving data, Please contact admin", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PersonsResponse> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+
+            }
+        }).start();
+    }
+
+    public void loadPersons() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<PersonDataEntity> personDataEntities = dbInstance.personDataDao().getAllPersons();
+                PersonDataEntity personDataEntity = personDataEntities.get(0);
+
+                List<PersonDataEntity> personDataUnsyncedEntities = dbInstance.personDataDao().getUnSyncedPersons();
+                PersonDataEntity personDataUnsyncedEntitie = personDataEntities.get(0);
+            }
+        }).start();
     }
 
     public void loadCamps() {
@@ -184,8 +238,23 @@ public class FieldsActivity extends AppCompatActivity {
                     public void run() {
                         ArrayAdapter<CampNames> campListArrayAdapter = new ArrayAdapter<CampNames>(FieldsActivity.this,
                                 android.R.layout.simple_spinner_item, campList);
+                        if (campList.size() > 0)
+                            campSelectedValue = String.valueOf(campList.get(0).getId());
                         campListArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         campNameSpn.setAdapter(campListArrayAdapter);
+                        campNameSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                //stateSelectedValue
+                                CampNames campName = (CampNames) parent.getSelectedItem();
+                                campSelectedValue = String.valueOf(campName.getId());
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
                     }
                 });
             }
@@ -194,9 +263,10 @@ public class FieldsActivity extends AppCompatActivity {
     }
 
     public boolean validateData() {
-        if (nameEdt.getText().toString().equals("") || ageEdt.getText().toString().equals("") || addressEdt.getText().toString().equals("") ||
-                mobileEdt.getText().toString().equals("") || notesEdt.getText().toString().equals("")) {
-            Toast.makeText(context, "Please enter all fields",
+        if (nameEdt.getText().toString().equals("") || ageEdt.getText().toString().equals("")) {
+//            || ageEdt.getText().toString().equals("") || addressEdt.getText().toString().equals("") ||
+//                    mobileEdt.getText().toString().equals("") || notesEdt.getText().toString().equals("")
+            Toast.makeText(context, "Name and age is required",
                     Toast.LENGTH_LONG).show();
             return false;
         } else {
@@ -209,13 +279,24 @@ public class FieldsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 dbInstance.personDataDao().insert(var);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        syncDB();
+                    }
+                });
+
+
             }
         }).start();
     }
 
+    public String authToken() {
+        return "JWT " + pref.getUserToken();
+    }
 
     public void updateCamps() {
-        Call<List<CampNames>> response = apiService.getCampList("JWT " + pref.getUserToken());
+        Call<List<CampNames>> response = apiService.getCampList(authToken());
         response.enqueue(new Callback<List<CampNames>>() {
             @Override
             public void onResponse(Call<List<CampNames>> call, Response<List<CampNames>> response) {

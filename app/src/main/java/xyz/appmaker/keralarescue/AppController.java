@@ -13,7 +13,7 @@ public static APIService RetrofitService;
     public void onCreate() {
         super.onCreate();
          retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.108:8000")
+                .baseUrl("http://192.168.1.102:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
