@@ -45,7 +45,7 @@ public class FieldsActivity extends AppCompatActivity {
 
     EditText nameEdt, ageEdt, addressEdt, mobileEdt, notesEdt;
     TextView syncDetailsTextView;
-    Spinner campNameSpn, genderSpn, districtSpn;
+    Spinner campNameSpn, genderSpn;//, districtSpn;
     HashMap<String, String> distMap = new HashMap<>();
     PreferensHandler pref;
     Button submitBtn;
@@ -53,9 +53,8 @@ public class FieldsActivity extends AppCompatActivity {
     private PersonDataDao personDao;
     CampDatabase dbInstance;
 
-    ArrayList<States> statesList = new ArrayList<>();
     ArrayList<Gender> genderList = new ArrayList<>();
-    ArrayList<CampNames> campList = new ArrayList<>();
+    //ArrayList<CampNames> campList = new ArrayList<>();
 
     String districtSelectedValue = "tvm";
     String genderSelectedValue = "0";
@@ -86,7 +85,7 @@ public class FieldsActivity extends AppCompatActivity {
         });*/
 
         //Camp Spinners
-        campNameSpn = findViewById(R.id.camp_spinner);
+        //campNameSpn = findViewById(R.id.camp_spinner);
 
 
         // Gender spinner
@@ -117,30 +116,10 @@ public class FieldsActivity extends AppCompatActivity {
             }
         });
 
-        // Districts Spinner
-        statesList.add(new States("tvm", "Thiruvananthapuram"));
-        statesList.add(new States("kol", "Kollam"));
-        statesList.add(new States("ptm", "Pathanamthitta"));
-        statesList.add(new States("alp", "Alappuzha"));
-        statesList.add(new States("ktm", "Kottayam"));
-        statesList.add(new States("idk", "Idukki"));
-        statesList.add(new States("ekm", "Ernakulam"));
-        statesList.add(new States("tcr", "Thrissur"));
-        statesList.add(new States("pkd", "Palakkad"));
-        statesList.add(new States("mpm", "Malappuram"));
-        statesList.add(new States("koz", "Kozhikode"));
-        statesList.add(new States("wnd", "Wayanad"));
-        statesList.add(new States("knr", "Kannur"));
-        statesList.add(new States("ksr", "Kasaragod"));
 
-        ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
-                android.R.layout.simple_spinner_item, statesList);
-        districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        districtSpn = (Spinner) findViewById(R.id.district);
 
-        districtSpn.setAdapter(districtAdapter);
 
-        if (pref != null)
+       /* if (pref != null)
             districtSpn.setSelection(pref.getDistrictDef());
 
         districtSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -156,7 +135,7 @@ public class FieldsActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
 
         nameEdt = (EditText) findViewById(R.id.name);
@@ -186,8 +165,8 @@ public class FieldsActivity extends AppCompatActivity {
                 }
             }
         });
-        updateCamps();
-        loadCamps();
+       // updateCamps();
+       // loadCamps();
 
         syncDB();
         updateSynced();
@@ -263,7 +242,7 @@ public class FieldsActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void loadCamps() {
+   /* public void loadCamps() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -295,7 +274,7 @@ public class FieldsActivity extends AppCompatActivity {
             }
         }).start();
 
-    }
+    }*/
 
     public boolean validateData() {
         if (nameEdt.getText().toString().equals("") || ageEdt.getText().toString().equals("")) {
@@ -344,7 +323,7 @@ public class FieldsActivity extends AppCompatActivity {
         return "JWT " + pref.getUserToken();
     }
 
-    public void updateCamps() {
+   /* public void updateCamps() {
         Call<List<CampNames>> response = apiService.getCampList(authToken());
         response.enqueue(new Callback<List<CampNames>>() {
             @Override
@@ -368,8 +347,8 @@ public class FieldsActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void insetCampDb(final List<CampNames> var) {
+*/
+   /* public void insetCampDb(final List<CampNames> var) {
         Log.e("TAG", "insetCampDb ");
 
         new Thread(new Runnable() {
@@ -379,12 +358,12 @@ public class FieldsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        loadCamps();
+                        //loadCamps();
                     }
                 });
             }
         }).start();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -408,6 +387,21 @@ public class FieldsActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_logout) {
+            Toast.makeText(this, "Loging out", Toast.LENGTH_SHORT).show();
+            logoutUser();
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    public  void logoutUser(){
+        if(pref!= null){
+            pref.setUserToken("");
+            Intent actLogin = new Intent(FieldsActivity.this, MainActivity.class);
+            startActivity(actLogin);
+        }
     }
 }

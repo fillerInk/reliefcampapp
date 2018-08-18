@@ -1,5 +1,6 @@
 package xyz.appmaker.keralarescue.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,20 +10,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import xyz.appmaker.keralarescue.Adapters.CampRecycleViewAdapter;
 import xyz.appmaker.keralarescue.Interfaces.RecycleItemClickListener;
+import xyz.appmaker.keralarescue.MainActivity;
 import xyz.appmaker.keralarescue.Models.States;
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
 import xyz.appmaker.keralarescue.Tools.Misc;
+import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class CampsActivity extends AppCompatActivity {
 
@@ -33,7 +39,8 @@ public class CampsActivity extends AppCompatActivity {
     List<CampNames> campNames = new ArrayList<>();
     RecycleItemClickListener recycleItemClickListener;
     Spinner districtSpinner;
-
+    PreferensHandler pref;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,8 @@ public class CampsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camps);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = getApplicationContext();
+        pref = new PreferensHandler(context);
         districtSpinner = (Spinner) findViewById(R.id.spinner_district);
         ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
                 android.R.layout.simple_spinner_item, Misc.getStates());
@@ -97,4 +106,38 @@ public class CampsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_camp, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if (id == R.id.action_logout) {
+            Toast.makeText(this, "Loging out", Toast.LENGTH_SHORT).show();
+            logoutUser();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public  void logoutUser(){
+        if(pref!= null){
+            pref.setUserToken("");
+            Intent actLogin = new Intent(CampsActivity.this, MainActivity.class);
+            startActivity(actLogin);
+        }
+    }
 }

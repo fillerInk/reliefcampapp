@@ -23,27 +23,28 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="25dp"
                 />
-            <TextView
-                android:id="@+id/camp_title"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_below="@+id/title"
-                android:layout_height="wrap_content"
-                android:text="@string/camp_name"
-                android:textStyle="bold"
-                />
+            <!--  <TextView
+                  android:id="@+id/camp_title"
+                  android:layout_marginTop="20dp"
+                  android:layout_width="wrap_content"
+                  android:layout_below="@+id/title"
+                  android:layout_height="wrap_content"
+                  android:text="@string/camp_name"
+                  android:textStyle="bold"
+                  />
 
-            <Spinner
-                android:id="@+id/camp_spinner"
-                android:layout_below="@+id/camp_title"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+               <Spinner
+                  android:id="@+id/camp_spinner"
+                  android:layout_below="@+id/camp_title"
+                  android:layout_marginTop="10dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
 
-            </Spinner>
+              </Spinner> -->
             <EditText
-                android:layout_below="@+id/camp_spinner"
+                android:layout_below="@+id/title"
                 android:id="@+id/name"
+
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
 
@@ -85,7 +86,7 @@
                 android:layout_height="100dp"
                 android:hint="@string/address"
                 />
-            <TextView
+            <!-- <TextView
                 android:id="@+id/district_title"
                 android:layout_below="@+id/address"
                 android:layout_marginTop="20dp"
@@ -101,11 +102,11 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            </Spinner>
+            </Spinner> -->
 
             <EditText
                 android:id="@+id/mobile"
-                android:layout_below="@+id/district"
+                android:layout_below="@+id/address"
                 android:layout_marginTop="20dp"
                 android:inputType="number"
                 android:layout_width="match_parent"

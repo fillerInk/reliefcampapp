@@ -5,7 +5,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="user_login">User Login</string>
-    <string name="title_activity_fields">FieldsActivity</string>
+    <string name="title_activity_fields">Add Person Details</string>
     <string name="camp_name">Camp Name</string>
     <string name="person_registration">Person Registration</string>
     <string name="gender">Gender</string>
@@ -14,9 +14,10 @@
     <string name="mobile">Mobile</string>
     <string name="note">Note</string>
     <string name="submit">Submit</string>
-    <string name="title_activity_camps">CampsActivity</string>
+    <string name="title_activity_camps">Select Camp Details</string>
     <string name="select_district">Select District</string>
     <string name="select_camp">Select Camp</string>
     <string name="search">Search</string>
     <string name="title_activity_sync_status">SyncStatusActivity</string>
+    <string name="logout">Logout</string>
 </resources>
