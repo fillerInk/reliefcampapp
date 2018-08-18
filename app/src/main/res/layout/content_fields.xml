@@ -15,14 +15,15 @@
             android:layout_width="match_parent"
             android:layout_margin="20dp"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:text="@string/person_registration"
-                android:layout_centerHorizontal="true"
-                android:textSize="25dp"
-                />
+                android:textSize="20dp" />
             <!--  <TextView
                   android:id="@+id/camp_title"
                   android:layout_marginTop="20dp"
@@ -42,19 +43,28 @@
 
               </Spinner> -->
             <EditText
-                android:layout_below="@+id/title"
                 android:id="@+id/name"
-
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
 
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+
+                android:layout_marginTop="20dp"
                 android:hint="Name"
+                android:singleLine="true" />
+            <EditText
+                android:id="@+id/mobile"
+                android:layout_below="@+id/name"
+                android:layout_marginTop="20dp"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/mobile"
                 />
 
             <EditText
                 android:id="@+id/age"
-                android:layout_below="@+id/name"
+                android:layout_below="@+id/mobile"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:inputType="number"
@@ -78,17 +88,9 @@
                 android:layout_height="wrap_content">
             </Spinner>
 
-            <EditText
-                android:id="@+id/address"
-                android:layout_below="@+id/gender"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:hint="@string/address"
-                />
-             <TextView
+            <TextView
                 android:id="@+id/district_title"
-                android:layout_below="@+id/address"
+                android:layout_below="@+id/gender"
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,18 +107,18 @@
             </Spinner>
 
             <EditText
-                android:id="@+id/mobile"
+                android:id="@+id/address"
                 android:layout_below="@+id/district"
                 android:layout_marginTop="20dp"
-                android:inputType="number"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/mobile"
+                android:layout_height="100dp"
+                android:hint="@string/address"
                 />
+
 
             <EditText
                 android:id="@+id/note"
-                android:layout_below="@+id/mobile"
+                android:layout_below="@+id/address"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("KeralaRescue.in Camps");
         progressBar = (ProgressBar) findViewById(R.id.loading_login);
         setSupportActionBar(toolbar);
 
