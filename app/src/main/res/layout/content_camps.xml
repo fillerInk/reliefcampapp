@@ -116,26 +116,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp">
 
-                <TextView
-                    android:id="@+id/camp_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/fab_margin"
-                    android:layout_marginTop="7dp"
-                    android:text="@string/select_camp"
-                    android:textSize="19dp"
-                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content">
+
+
 
                 <EditText
                     android:id="@+id/edt_search_camp"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/camp_title"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="3.4"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
                     android:hint="@string/search"
                     android:singleLine="true" />
+
+                    <Button
+                        android:id="@+id/search_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="@string/search"
+                        />
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_margin="@dimen/fab_margin"
@@ -143,7 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="20dp"
-                    android:layout_below="@+id/edt_search_camp"
+                    android:layout_below="@+id/linearLayout"
                     android:layout_marginTop="20dp"
                     android:scrollbars="vertical" />
             </RelativeLayout>

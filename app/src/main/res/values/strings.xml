@@ -20,4 +20,5 @@
     <string name="search">Search</string>
     <string name="title_activity_sync_status">SyncStatusActivity</string>
     <string name="logout">Logout</string>
+    <string name="title_activity_requirement">RequirementActivity</string>
 </resources>

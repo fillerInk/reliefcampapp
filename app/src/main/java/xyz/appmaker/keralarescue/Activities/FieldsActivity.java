@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,7 @@ public class FieldsActivity extends AppCompatActivity {
     String genderSelectedValue = null;
     String campSelectedValue = "0";
     APIService apiService;
+    TextView titleText;
 
 
     @Override
@@ -76,7 +79,10 @@ public class FieldsActivity extends AppCompatActivity {
         dbInstance = CampDatabase.getDatabase(context);
         apiService = AppController.getRetrofitInstance();
         campSelectedValue = getIntent().getStringExtra("campId");
-
+        titleText= (TextView) findViewById(R.id.title);
+        if(pref.getRecentCampID() != -1) {
+            titleText.setText(pref.getRecentCamp());
+        }
         // Gender spinner
         genderList.add(new Gender("", "-"));
         genderList.add(new Gender("0", "Male"));
@@ -339,7 +345,21 @@ public class FieldsActivity extends AppCompatActivity {
 
             return true;
         }
+        if (id == R.id.action_logout) {
+            Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
+            logoutUser();
+
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void logoutUser() {
+        if (pref != null) {
+            pref.setUserToken("");
+            Intent actLogin = new Intent(FieldsActivity.this, MainActivity.class);
+            startActivity(actLogin);
+        }
     }
 }

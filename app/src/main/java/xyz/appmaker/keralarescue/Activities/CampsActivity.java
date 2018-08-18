@@ -57,7 +57,7 @@ public class CampsActivity extends AppCompatActivity {
     String districtSelectedValue;
     List<CampNames> searchResult = new ArrayList<>();
     EditText edtSearch;
-    Button btnRecent;
+    Button btnRecent, btnSearch;
     static final ArrayList<States> districtArray = Misc.getStates();
 
       ArrayAdapter<States> districtAdapter;
@@ -71,6 +71,8 @@ public class CampsActivity extends AppCompatActivity {
         context = getApplicationContext();
         pref = new PreferensHandler(context);
         btnRecent = (Button) findViewById(R.id.btn_recent);
+
+        btnSearch = (Button) findViewById(R.id.search_btn);
         recentCardview = (CardView) findViewById(R.id.recent_card_view);
 
 
@@ -129,7 +131,7 @@ public class CampsActivity extends AppCompatActivity {
         mAdapter = new CampRecycleViewAdapter(recycleItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         // specify an adapter (see also next example)
-        edtSearch.addTextChangedListener(new TextWatcher() {
+       /* edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -144,8 +146,17 @@ public class CampsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 loadSearchedCamp(s.toString());
             }
-        });
+        });*/
 //        loadCamps("tvm");
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtSearch != null && edtSearch.getText() != null) {
+                    loadSearchedCamp(edtSearch.getText().toString());
+                }
+            }
+        });
 
     }
 

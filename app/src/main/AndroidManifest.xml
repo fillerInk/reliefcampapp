@@ -34,6 +34,10 @@
         <activity
             android:name=".Activities.SyncStatusActivity"
             android:label="@string/title_activity_sync_status"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.RequirementActivity"
+            android:label="@string/title_activity_requirement"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
