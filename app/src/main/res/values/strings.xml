@@ -14,4 +14,8 @@
     <string name="mobile">Mobile</string>
     <string name="note">Note</string>
     <string name="submit">Submit</string>
+    <string name="title_activity_camps">CampsActivity</string>
+    <string name="select_district">Select District</string>
+    <string name="select_camp">Select Camp</string>
+    <string name="search">Search</string>
 </resources>

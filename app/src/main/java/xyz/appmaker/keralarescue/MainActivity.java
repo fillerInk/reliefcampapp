@@ -18,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import xyz.appmaker.keralarescue.Activities.CampsActivity;
 import xyz.appmaker.keralarescue.Activities.FieldsActivity;
 import xyz.appmaker.keralarescue.Models.UserLogin;
 import xyz.appmaker.keralarescue.Models.UserResponse;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             prefs.setUserToken(response.body().token);
                             Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
-                            Intent fieldsAct = new Intent(MainActivity.this, FieldsActivity.class);
+                            Intent fieldsAct = new Intent(MainActivity.this, CampsActivity.class);
                             startActivity(fieldsAct);
                             finish();
                         } else {

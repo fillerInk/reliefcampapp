@@ -1,6 +1,7 @@
 package xyz.appmaker.keralarescue.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,6 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import xyz.appmaker.keralarescue.AppController;
+import xyz.appmaker.keralarescue.MainActivity;
 import xyz.appmaker.keralarescue.Models.Gender;
 import xyz.appmaker.keralarescue.Models.PersonsResponse;
 import xyz.appmaker.keralarescue.Models.States;
@@ -58,8 +60,6 @@ public class FieldsActivity extends AppCompatActivity {
     String districtSelectedValue = "tvm";
     String genderSelectedValue = "0";
     String campSelectedValue = "0";
-
-
     APIService apiService;
 
 
@@ -75,6 +75,15 @@ public class FieldsActivity extends AppCompatActivity {
         syncDetailsTextView = findViewById(R.id.syncDetails);
         dbInstance = CampDatabase.getDatabase(context);
         apiService = AppController.getRetrofitInstance();
+
+
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent fieldClass = new Intent(FieldsActivity.this, CampsActivity.class);
+                startActivity(fieldClass);
+            }
+        });
 
         //Camp Spinners
         campNameSpn = findViewById(R.id.camp_spinner);
