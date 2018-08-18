@@ -57,8 +57,8 @@ public class FieldsActivity extends AppCompatActivity {
     ArrayList<Gender> genderList = new ArrayList<>();
     ArrayList<CampNames> campList = new ArrayList<>();
 
-    String districtSelectedValue = "-";
-    String genderSelectedValue = "-1";
+    String districtSelectedValue = null;
+    String genderSelectedValue = null;
     String campSelectedValue = "0";
     APIService apiService;
 
@@ -75,15 +75,10 @@ public class FieldsActivity extends AppCompatActivity {
         syncDetailsTextView = findViewById(R.id.syncDetails);
         dbInstance = CampDatabase.getDatabase(context);
         apiService = AppController.getRetrofitInstance();
-
-
-
-
-
-
+        campSelectedValue = getIntent().getStringExtra("campId");
 
         // Gender spinner
-        genderList.add(new Gender("-1", "-"));
+        genderList.add(new Gender("", "-"));
         genderList.add(new Gender("0", "Male"));
         genderList.add(new Gender("1", "Female"));
         genderList.add(new Gender("2", "Others"));
@@ -100,9 +95,7 @@ public class FieldsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //stateSelectedValue
                 Gender gender = (Gender) parent.getSelectedItem();
-
                 genderSelectedValue = gender.getId();
-
             }
 
             @Override
@@ -110,7 +103,6 @@ public class FieldsActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
@@ -152,11 +144,12 @@ public class FieldsActivity extends AppCompatActivity {
                 Log.e("Tag", "state code, gender code " + districtSelectedValue + "  - " + genderSelectedValue);
 
                 if (validateData()) {
+
                     PersonDataEntity personDataModel = new PersonDataEntity(
                             nameEdt.getText().toString(),
                             campSelectedValue,
                             ageEdt.getText().toString(),
-                            genderSelectedValue,
+                            (!genderSelectedValue.equals("")) ? genderSelectedValue : null,
                             addressEdt.getText().toString(),
                             districtSelectedValue,
                             mobileEdt.getText().toString(),
@@ -278,10 +271,10 @@ public class FieldsActivity extends AppCompatActivity {
     }
 
     public boolean validateData() {
-        if (nameEdt.getText().toString().equals("") || ageEdt.getText().toString().equals("")) {
+        if (nameEdt.getText().toString().equals("")) {
 //            || ageEdt.getText().toString().equals("") || addressEdt.getText().toString().equals("") ||
 //                    mobileEdt.getText().toString().equals("") || notesEdt.getText().toString().equals("")
-            Toast.makeText(context, "Name and age is required",
+            Toast.makeText(context, "Name is required",
                     Toast.LENGTH_LONG).show();
             return false;
         } else {

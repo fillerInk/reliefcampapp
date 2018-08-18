@@ -98,8 +98,8 @@ public class CampsActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CampRecycleViewAdapter(recycleItemClickListener);
-        mRecyclerView.setAdapter(mAdapter);
+
+
         recycleItemClickListener = new RecycleItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -110,6 +110,8 @@ public class CampsActivity extends AppCompatActivity {
                 startActivity(fieldIntent);
             }
         };
+        mAdapter = new CampRecycleViewAdapter(recycleItemClickListener);
+        mRecyclerView.setAdapter(mAdapter);
         // specify an adapter (see also next example)
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,7 +129,7 @@ public class CampsActivity extends AppCompatActivity {
                 loadSearchedCamp(s.toString());
             }
         });
-        loadCamps("tvm");
+//        loadCamps("tvm");
 
     }
 

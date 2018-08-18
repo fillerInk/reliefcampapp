@@ -11,7 +11,7 @@ public class Misc {
 
     public static ArrayList<States> getStates(){
         // Districts Spinner
-        statesList.add(new States("-", "-"));
+        statesList.add(new States("", "-"));
         statesList.add(new States("tvm", "Thiruvananthapuram"));
         statesList.add(new States("kol", "Kollam"));
         statesList.add(new States("ptm", "Pathanamthitta"));
