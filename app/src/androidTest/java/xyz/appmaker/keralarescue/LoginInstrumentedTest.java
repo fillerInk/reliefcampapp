@@ -9,6 +9,7 @@ import android.util.Log;
 
 import org.junit.After;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -60,18 +61,8 @@ public class LoginInstrumentedTest {
     }
 
 
-    @Test
-    public void loginErrorMessage() {
-        PreferensHandler handler = new PreferensHandler(InstrumentationRegistry.getTargetContext().getApplicationContext());
-        handler.setUserToken("");
-        onView(withId(R.id.loginBtn)).perform(click());
-        Log.d("URL", Config.BASE_URL);
-
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         server.shutdown();
     }
 
@@ -79,7 +70,7 @@ public class LoginInstrumentedTest {
     @Test
     public void clickSignInButton_validUsernamePassword() {
         //locate and click on the login button
-//        server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InRlc3QiLCJleHAiOjE1MzYzMTA5MzMsImVtYWlsIjoiIn0.NNjtJj3yh_bdUVNlh2L1ATeetPtK87BGJa6nS_Oamw4\",\"user\":{\"pk\":2,\"username\":\"test\",\"email\":\"\",\"first_name\":\"\",\"last_name\":\"\"}}"));
+        server.enqueue(new MockResponse().setResponseCode(200).setBody("{\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InRlc3QiLCJleHAiOjE1MzYzMTA5MzMsImVtYWlsIjoiIn0.NNjtJj3yh_bdUVNlh2L1ATeetPtK87BGJa6nS_Oamw4\",\"user\":{\"pk\":2,\"username\":\"test\",\"email\":\"\",\"first_name\":\"\",\"last_name\":\"\"}}"));
 
         onView(withId(R.id.username)).perform(clearText(), typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(clearText(), typeText("test12345"), closeSoftKeyboard());
@@ -96,9 +87,17 @@ public class LoginInstrumentedTest {
 
     @Test
     public void clickSignInButton_InvalidUsernamePassword() {
+
+        onView(withId(R.id.loginBtn)).perform(click());
+
+
+        onView(withText("Please enter Username\nPlease enter password"))
+                .inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
+
         //locate and click on the login button
         server.enqueue(new MockResponse().setResponseCode(400).setBody("{\"non_field_errors\":[\"Unable to log in with provided credentials.\"]}"));
-        server.enqueue(new MockResponse().setResponseCode(400).setBody("{\"non_field_errors\":[\"Unable to log in with provided credentials.\"]}"));
+
         onView(withId(R.id.username)).perform(clearText(), typeText("test123"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(clearText(), typeText("test12345"), closeSoftKeyboard());
         onView(withId(R.id.loginBtn)).perform(click());
