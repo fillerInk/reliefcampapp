@@ -21,7 +21,7 @@ A simple app for rescue camp coordinators to enter information about accomodated
 - Create a user for the backend (using `python3 manage.py createsuperuser`). Create a relief camp.
 
 ### Using Test Server
-We have hosted a test server of the Django application at [http://35.202.24.11/](http://35.202.24.11/find_people/). This can be used for testing the app from the pre-built apk [Link to APK in repo](blob/master/app-debug.apk). 
+We have hosted a test server of the Django application at [http://35.202.24.11/](http://35.202.24.11/find_people/). This can be used for testing the app from the pre-built apk [Link to APK in repo](https://github.com/Appmaker-xyz/KeralaRescueRefugeeDB/raw/master/app-debug.apk). 
 
 ### App Testings Steps
 
