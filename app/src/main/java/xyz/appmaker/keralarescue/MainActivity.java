@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     EditText passwordEditText;
     PreferensHandler prefs;
     ProgressBar progressBar;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         progressBar = (ProgressBar) findViewById(R.id.loading_login);
         setSupportActionBar(toolbar);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
         prefs = new PreferensHandler(getApplicationContext());

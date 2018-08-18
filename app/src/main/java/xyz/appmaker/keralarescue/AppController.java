@@ -2,6 +2,8 @@ package xyz.appmaker.keralarescue;
 
 import android.app.Application;
 
+import com.onesignal.OneSignal;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -16,6 +18,10 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
 
     }
 
