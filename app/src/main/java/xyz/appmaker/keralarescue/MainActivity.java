@@ -39,13 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent fieldClass = new Intent(MainActivity.this, FieldsActivity.class);
-                startActivity(fieldClass);
-            }
-        });
+
         prefs = new PreferensHandler(getApplicationContext());
         String userToken = prefs.getUserToken();
 

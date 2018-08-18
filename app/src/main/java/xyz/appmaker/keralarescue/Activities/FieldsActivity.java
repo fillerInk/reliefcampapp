@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class FieldsActivity extends AppCompatActivity {
 
 
     EditText nameEdt, ageEdt, addressEdt, mobileEdt, notesEdt;
+    TextView syncDetailsTextView;
     Spinner campNameSpn, genderSpn, districtSpn;
     HashMap<String, String> distMap = new HashMap<>();
     PreferensHandler pref;
@@ -67,6 +69,7 @@ public class FieldsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         pref = new PreferensHandler(context);
+        syncDetailsTextView = findViewById(R.id.syncDetails);
         dbInstance = CampDatabase.getDatabase(context);
         apiService = AppController.getRetrofitInstance();
 
@@ -175,6 +178,24 @@ public class FieldsActivity extends AppCompatActivity {
         loadCamps();
 
         syncDB();
+        updateSynced();
+    }
+
+    public void updateSynced() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Integer suyncedCount = dbInstance.personDataDao().statusCount("1");
+                final Integer unsyncedCount = dbInstance.personDataDao().statusCount("0");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        syncDetailsTextView.setText(unsyncedCount + " Pending - " + suyncedCount + " Synced");
+                    }
+                });
+            }
+        }).start();
+
     }
 
 
@@ -197,6 +218,7 @@ public class FieldsActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     dbInstance.personDataDao().updateStatus(updateIds, "1");
+                                    updateSynced();
                                 }
                             }).start();
                         } else {

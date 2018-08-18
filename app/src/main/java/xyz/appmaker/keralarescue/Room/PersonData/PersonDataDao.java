@@ -26,6 +26,9 @@ public interface PersonDataDao {
     @Query("UPDATE person_data SET status=:status WHERE id IN(:ids)")
     void updateStatus(int[] ids, String status);
 
+    @Query("SELECT count(*) from person_data WHERE status=:status")
+    Integer statusCount(String status);
+
 
 }
 
