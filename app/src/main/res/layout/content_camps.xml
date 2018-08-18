@@ -57,11 +57,53 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/recent_card_view"
+            android:layout_below="@+id/dist_card_view"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="40dp"
+            card_view:cardCornerRadius="4dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp">
+
+                <TextView
+                    android:id="@+id/recent_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:layout_marginTop="7dp"
+                    android:text="Recent Camp"
+                    android:textSize="19dp"
+                    android:textStyle="bold" />
+
+               <Button
+                   android:id="@+id/btn_recent"
+                   android:layout_width="wrap_content"
+                   android:layout_marginLeft="20dp"
+                   android:layout_marginBottom="20dp"
+                   android:layout_height="wrap_content"
+                   android:layout_below="@+id/recent_title"
+
+                   />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/camp_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dist_card_view"
+            android:layout_below="@+id/recent_card_view"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

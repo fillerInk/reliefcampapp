@@ -11,6 +11,9 @@ public class PreferensHandler {
     int PRIVATE_MODE = 0;
     private static final String PREF_NAME = "app_pref";
     final String district_def = "district_def";
+    final String recent_camp_id = "recent_camp_id";
+    final String recent_camp_name = "recent_camp_name";
+
     final String camp_def = "camp_def";
     final String userTokenKey = "user_token";
 
@@ -38,6 +41,24 @@ public class PreferensHandler {
     public void setUserToken(String userToken) {
         editor.putString(userTokenKey, userToken);
         editor.commit();
+    }
+
+    public void setRecentCampID(int var) {
+        editor.putInt(recent_camp_id, var);
+        editor.commit();
+    }
+
+    public int getRecentCampID() {
+        return pref.getInt(recent_camp_id, -1);
+    }
+
+    public void setRecentCamp(String var) {
+        editor.putString(recent_camp_name, var);
+        editor.commit();
+    }
+
+    public String getRecentCamp() {
+        return pref.getString(recent_camp_name, "");
     }
 
 }

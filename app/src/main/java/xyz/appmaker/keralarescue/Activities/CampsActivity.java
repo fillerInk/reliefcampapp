@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -55,7 +57,11 @@ public class CampsActivity extends AppCompatActivity {
     String districtSelectedValue;
     List<CampNames> searchResult = new ArrayList<>();
     EditText edtSearch;
+    Button btnRecent;
+    static final ArrayList<States> districtArray = Misc.getStates();
 
+      ArrayAdapter<States> districtAdapter;
+      CardView recentCardview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +70,17 @@ public class CampsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         pref = new PreferensHandler(context);
+        btnRecent = (Button) findViewById(R.id.btn_recent);
+        recentCardview = (CardView) findViewById(R.id.recent_card_view);
+
+
         districtSpinner = findViewById(R.id.spinner_district);
         edtSearch = (EditText) findViewById(R.id.edt_search_camp);
-        final ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
-                android.R.layout.simple_spinner_item, Misc.getStates());
-        districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dbInstance = CampDatabase.getDatabase(context);
+        districtAdapter = new ArrayAdapter<States>(this,
+                android.R.layout.simple_spinner_item, districtArray);
+        districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       // districtSpinner
         districtSpinner.setAdapter(districtAdapter);
         apiService = AppController.getRetrofitInstance();
 
@@ -104,7 +115,12 @@ public class CampsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 // Log.e("TAG","onItem final call"+position);
+
                 CampNames camp = campNames.get(position);
+                if(pref != null ){
+                    pref.setRecentCampID(camp.getId());
+                    pref.setRecentCamp(camp.getName());
+                }
                 Intent fieldIntent = new Intent(CampsActivity.this, FieldsActivity.class);
                 fieldIntent.putExtra("campId", String.valueOf(camp.getId()));
                 startActivity(fieldIntent);
@@ -218,8 +234,26 @@ public class CampsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("TAG"," onResume ");
+        if(pref.getRecentCampID() != -1){
+            btnRecent.setText(pref.getRecentCamp());
+            btnRecent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent fieldIntent = new Intent(CampsActivity.this, FieldsActivity.class);
+                    fieldIntent.putExtra("campId", String.valueOf(pref.getRecentCampID()));
+                    startActivity(fieldIntent);
+                }
+            });
+            recentCardview.setVisibility(View.VISIBLE);
+        }else{
+            recentCardview.setVisibility(View.GONE);
+        }
 
-
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
