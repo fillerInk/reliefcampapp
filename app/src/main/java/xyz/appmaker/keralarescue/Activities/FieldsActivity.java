@@ -38,6 +38,7 @@ import xyz.appmaker.keralarescue.Room.CampDatabase;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataDao;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataEntity;
 import xyz.appmaker.keralarescue.Tools.APIService;
+import xyz.appmaker.keralarescue.Tools.Misc;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class FieldsActivity extends AppCompatActivity {
@@ -53,7 +54,6 @@ public class FieldsActivity extends AppCompatActivity {
     private PersonDataDao personDao;
     CampDatabase dbInstance;
 
-    ArrayList<States> statesList = new ArrayList<>();
     ArrayList<Gender> genderList = new ArrayList<>();
     ArrayList<CampNames> campList = new ArrayList<>();
 
@@ -77,16 +77,9 @@ public class FieldsActivity extends AppCompatActivity {
         apiService = AppController.getRetrofitInstance();
 
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent fieldClass = new Intent(FieldsActivity.this, CampsActivity.class);
-                startActivity(fieldClass);
-            }
-        });
 
-        //Camp Spinners
-//        campNameSpn = findViewById(R.id.camp_spinner);
+
+
 
 
         // Gender spinner
@@ -118,27 +111,12 @@ public class FieldsActivity extends AppCompatActivity {
             }
         });
 
-        // Districts Spinner
-        statesList.add(new States("-", "-"));
-        statesList.add(new States("tvm", "Thiruvananthapuram"));
-        statesList.add(new States("kol", "Kollam"));
-        statesList.add(new States("ptm", "Pathanamthitta"));
-        statesList.add(new States("alp", "Alappuzha"));
-        statesList.add(new States("ktm", "Kottayam"));
-        statesList.add(new States("idk", "Idukki"));
-        statesList.add(new States("ekm", "Ernakulam"));
-        statesList.add(new States("tcr", "Thrissur"));
-        statesList.add(new States("pkd", "Palakkad"));
-        statesList.add(new States("mpm", "Malappuram"));
-        statesList.add(new States("koz", "Kozhikode"));
-        statesList.add(new States("wnd", "Wayanad"));
-        statesList.add(new States("knr", "Kannur"));
-        statesList.add(new States("ksr", "Kasaragod"));
+
 
         ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
-                android.R.layout.simple_spinner_item, statesList);
+                android.R.layout.simple_spinner_item, Misc.getStates());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        districtSpn = (Spinner) findViewById(R.id.district);
+        districtSpn = (Spinner) findViewById(R.id.district);
 
         districtSpn.setAdapter(districtAdapter);
 
@@ -188,8 +166,8 @@ public class FieldsActivity extends AppCompatActivity {
                 }
             }
         });
-        updateCamps();
-        loadCamps();
+        //updateCamps();
+        //loadCamps();
 
         syncDB();
         updateSynced();
@@ -346,47 +324,6 @@ public class FieldsActivity extends AppCompatActivity {
         return "JWT " + pref.getUserToken();
     }
 
-    public void updateCamps() {
-        Call<List<CampNames>> response = apiService.getCampList(authToken(), "");
-        response.enqueue(new Callback<List<CampNames>>() {
-            @Override
-            public void onResponse(Call<List<CampNames>> call, Response<List<CampNames>> response) {
-                Log.e("TAG", "success response ");
-
-                List<CampNames> items = response.body();
-
-                if (items != null && items.size() > 0) {
-                    String name = items.get(0).getName();
-                    Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
-                    insetCampDb(items);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CampNames>> call, Throwable t) {
-                Log.e("TAG", "fail response ");
-
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void insetCampDb(final List<CampNames> var) {
-        Log.e("TAG", "insetCampDb ");
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dbInstance.campDao().insertCapms(var);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadCamps();
-                    }
-                });
-            }
-        }).start();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
