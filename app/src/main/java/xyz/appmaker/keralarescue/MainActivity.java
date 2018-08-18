@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     EditText passwordEditText;
     PreferensHandler prefs;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

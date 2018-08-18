@@ -6,12 +6,16 @@ import android.support.test.runner.AndroidJUnit4;
 
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import okhttp3.mockwebserver.MockWebServer;
+import xyz.appmaker.keralarescue.Tools.Config;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -24,6 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -40,6 +45,16 @@ public class LoginInstrumentedTest {
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+    private MockWebServer server;
+
+    @Before
+    public void setUp() throws Exception {
+
+        server = new MockWebServer();
+        server.start();
+        Config.BASE_URL = server.url("/").toString();
+    }
+
 
     @Test
     public void loginErrorMessage() {
@@ -49,6 +64,12 @@ public class LoginInstrumentedTest {
 
 
     }
+
+    @After
+    public void tearDown() throws Exception {
+        server.shutdown();
+    }
+
 
     @Test
     public void clickSignInButton_validUsernamePassword() {

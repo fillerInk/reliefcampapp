@@ -133,7 +133,6 @@ public class FieldsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (pref != null)
                     pref.setDistrictDef(position);
-
                 States states = (States) parent.getSelectedItem();
                 districtSelectedValue = states.getId();
             }
@@ -279,9 +278,11 @@ public class FieldsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 dbInstance.personDataDao().insert(var);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        personAdded();
                         syncDB();
                     }
                 });
@@ -289,6 +290,18 @@ public class FieldsActivity extends AppCompatActivity {
 
             }
         }).start();
+    }
+
+    private void personAdded() {
+        Toast.makeText(context, "Person added successfully",
+                Toast.LENGTH_LONG).show();
+        nameEdt.setText("");
+        ageEdt.setText("");
+        addressEdt.setText("");
+        mobileEdt.setText("");
+        notesEdt.setText("");
+//        nameEdt.setText("");
+
     }
 
     public String authToken() {
