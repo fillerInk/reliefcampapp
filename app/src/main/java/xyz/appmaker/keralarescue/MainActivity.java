@@ -54,13 +54,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.108:8000")
 
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        final APIService service = retrofit.create(APIService.class);
+        final APIService service  = AppController.getRetrofitInstance();
 
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
