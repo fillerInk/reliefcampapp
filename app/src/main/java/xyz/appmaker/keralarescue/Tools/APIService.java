@@ -8,8 +8,11 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import xyz.appmaker.keralarescue.Models.PersonsResponse;
+import xyz.appmaker.keralarescue.Models.UpdateCamp;
 import xyz.appmaker.keralarescue.Models.UserLogin;
 import xyz.appmaker.keralarescue.Models.UserResponse;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
@@ -26,8 +29,11 @@ public interface APIService {
     @POST("api/1/persons/")
     Call<PersonsResponse> addPersons(@Header("Authorization") String authorization, @Body List<PersonDataEntity> personDataEntities);
 
-//    @GET("api/1/camplist/")
+    @GET("api/1/camplist/{id}")
+    Call<CampNames> getCamp(@Header("Authorization") String authorization, @Path("id") String id);
 
+    @PUT("api/1/camplist/{id}")
+    Call<CampNames> updateCamp(@Header("Authorization") String authorization, @Path("id") String id, @Body UpdateCamp updateCamp);
 
 
 }
