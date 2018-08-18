@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import retrofit2.Call;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     EditText usernameEditText;
     EditText passwordEditText;
     PreferensHandler prefs;
+    ProgressBar progressBar;
 
 
     @Override
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        progressBar = (ProgressBar) findViewById(R.id.loading_login);
         setSupportActionBar(toolbar);
 
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         String userToken = prefs.getUserToken();
 
         if (!userToken.equals("")) {
-            Intent fieldsAct = new Intent(MainActivity.this, FieldsActivity.class);
+            Intent fieldsAct = new Intent(MainActivity.this, CampsActivity.class);
             startActivity(fieldsAct);
             finish();
         }
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loginBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String message = "";
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     message += "Please enter password";
                 }
                 if (!message.equals("")) {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -77,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 userResponseCall.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        progressBar.setVisibility(View.GONE);
+
                         if (response.isSuccessful()) {
                             prefs.setUserToken(response.body().token);
                             Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
@@ -93,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+
                     }
                 });
 

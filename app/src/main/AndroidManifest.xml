@@ -30,6 +30,10 @@
         <activity
             android:name=".Activities.CampsActivity"
             android:label="@string/title_activity_camps"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.SyncStatusActivity"
+            android:label="@string/title_activity_sync_status"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

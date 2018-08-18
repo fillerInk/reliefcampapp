@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 
 public class PreferensHandler {
     SharedPreferences pref;
-
     SharedPreferences.Editor editor;
     Context c;
     int PRIVATE_MODE = 0;

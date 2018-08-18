@@ -77,13 +77,13 @@ public class FieldsActivity extends AppCompatActivity {
         apiService = AppController.getRetrofitInstance();
 
 
-        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent fieldClass = new Intent(FieldsActivity.this, CampsActivity.class);
                 startActivity(fieldClass);
             }
-        });
+        });*/
 
         //Camp Spinners
         campNameSpn = findViewById(R.id.camp_spinner);

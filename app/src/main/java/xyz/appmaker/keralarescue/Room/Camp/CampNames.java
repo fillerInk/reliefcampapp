@@ -17,9 +17,14 @@ public class CampNames {
     @ColumnInfo(name = "camp_id")
     private int id;
 
-    public CampNames(String name, int id) {
+    @NonNull
+    @ColumnInfo(name = "district")
+    private String district;
+
+    public CampNames(String name, int id, String district) {
         this.name = name;
         this.id = id;
+        this.district = district;
     }
 
     public String getName(){return this.name;}
@@ -30,4 +35,7 @@ public class CampNames {
         return name;
     }
 
+    public String getDistrict() {
+        return district;
+    }
 }

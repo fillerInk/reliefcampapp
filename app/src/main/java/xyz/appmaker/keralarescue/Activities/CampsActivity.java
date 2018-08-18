@@ -48,14 +48,14 @@ public class CampsActivity extends AppCompatActivity {
 
         districtSpinner.setAdapter(districtAdapter);
 
-     /*   FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+               Intent actField = new Intent(CampsActivity.this, FieldsActivity.class);
+               startActivity(actField);
             }
-        });*/
+        });
 
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -69,10 +69,10 @@ public class CampsActivity extends AppCompatActivity {
 
             }
         });
-        campNames.add(new CampNames("Camp 1 ",1));
-        campNames.add(new CampNames("Camp 2 ",2));
-        campNames.add(new CampNames("Camp 3 ",3));
-        campNames.add(new CampNames("Camp 4 ",4));
+        campNames.add(new CampNames("Camp 1 ",1, "ekm"));
+        campNames.add(new CampNames("Camp 2 ",2, "ekm"));
+        campNames.add(new CampNames("Camp 3 ",3, "ekm"));
+        campNames.add(new CampNames("Camp 4 ",4, "ekm"));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.camp_recycler_view);
 

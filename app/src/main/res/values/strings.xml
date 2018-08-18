@@ -18,4 +18,5 @@
     <string name="select_district">Select District</string>
     <string name="select_camp">Select Camp</string>
     <string name="search">Search</string>
+    <string name="title_activity_sync_status">SyncStatusActivity</string>
 </resources>

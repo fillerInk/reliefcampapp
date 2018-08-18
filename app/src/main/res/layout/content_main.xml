@@ -8,7 +8,9 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
@@ -49,6 +51,7 @@
             android:layout_below="@+id/username"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
+            android:inputType="textPassword"
             android:layout_height="wrap_content"
             android:hint="@string/password"
             />
@@ -68,5 +71,13 @@
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+</ScrollView>
+    <ProgressBar
+        android:id="@+id/loading_login"
+        android:layout_width="50dp"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="50dp" />
 
 </RelativeLayout>
