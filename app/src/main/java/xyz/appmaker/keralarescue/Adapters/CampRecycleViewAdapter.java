@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xyz.appmaker.keralarescue.Interfaces.RecycleItemClickListener;
@@ -32,10 +33,15 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
+   public CampRecycleViewAdapter(RecycleItemClickListener listener) {
+       this.mDataset = new ArrayList<>();
+       this.listener = listener;
+   }
+
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CampRecycleViewAdapter(List<CampNames> myDataset,  RecycleItemClickListener listener) {
+    public void updateDataset(List<CampNames> myDataset) {
         this.mDataset = myDataset;
-        this.listener = listener;
+        notifyDataSetChanged();
     }
 
     // Create new views (invoked by the layout manager)

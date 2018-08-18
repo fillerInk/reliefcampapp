@@ -9,12 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -40,7 +43,7 @@ public class CampsActivity extends AppCompatActivity {
 
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private CampRecycleViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     List<CampNames> campNames = new ArrayList<>();
     RecycleItemClickListener recycleItemClickListener;
@@ -50,6 +53,8 @@ public class CampsActivity extends AppCompatActivity {
     private APIService apiService;
     private CampDatabase dbInstance;
     String districtSelectedValue;
+    List<CampNames> searchResult = new ArrayList<>();
+    EditText edtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class CampsActivity extends AppCompatActivity {
         context = getApplicationContext();
         pref = new PreferensHandler(context);
         districtSpinner = findViewById(R.id.spinner_district);
+        edtSearch = (EditText) findViewById(R.id.edt_search_camp);
         final ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
                 android.R.layout.simple_spinner_item, Misc.getStates());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,7 +98,8 @@ public class CampsActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mAdapter = new CampRecycleViewAdapter(recycleItemClickListener);
+        mRecyclerView.setAdapter(mAdapter);
         recycleItemClickListener = new RecycleItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -104,7 +111,24 @@ public class CampsActivity extends AppCompatActivity {
             }
         };
         // specify an adapter (see also next example)
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                loadSearchedCamp(s.toString());
+            }
+        });
         loadCamps("tvm");
+
     }
 
 
@@ -159,8 +183,11 @@ public class CampsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter = new CampRecycleViewAdapter(campNames, recycleItemClickListener);
-                        mRecyclerView.setAdapter(mAdapter);
+                        //mAdapter.upda(campNames);
+                      //  mRecyclerView.setAdapter(mAdapter);
+                        mAdapter.updateDataset(campNames);
+
+
 
                     }
                 });
@@ -168,6 +195,28 @@ public class CampsActivity extends AppCompatActivity {
         }).start();
 
     }
+
+    public  void loadSearchedCamp( String search) {
+        Log.e("TAG","load search "+search);
+
+        if(search.equals("")){
+            mAdapter.updateDataset(campNames);
+            return;
+        }
+        searchResult.clear();
+
+        for (CampNames names: campNames) {
+            if(names.getName().toLowerCase().contains(search.toLowerCase())){
+                searchResult.add(names);
+            }
+        }
+        mAdapter.updateDataset(searchResult);
+
+        // return searchResult;
+
+    }
+
+
 
 
     @Override
