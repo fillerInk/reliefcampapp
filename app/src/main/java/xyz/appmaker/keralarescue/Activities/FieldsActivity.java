@@ -64,6 +64,7 @@ public class FieldsActivity extends AppCompatActivity {
     String campSelectedValue = "0";
     APIService apiService;
     TextView titleText;
+    Button btnReq;
 
 
     @Override
@@ -76,6 +77,7 @@ public class FieldsActivity extends AppCompatActivity {
         context = getApplicationContext();
         pref = new PreferensHandler(context);
         syncDetailsTextView = findViewById(R.id.syncDetails);
+        btnReq = (Button) findViewById(R.id.btn_req);
         dbInstance = CampDatabase.getDatabase(context);
         apiService = AppController.getRetrofitInstance();
         campSelectedValue = getIntent().getStringExtra("campId");
@@ -107,6 +109,14 @@ public class FieldsActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        btnReq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent reqAct = new Intent(FieldsActivity.this, RequirementActivity.class);
+                startActivity(reqAct);
             }
         });
 

@@ -21,4 +21,6 @@
     <string name="title_activity_sync_status">SyncStatusActivity</string>
     <string name="logout">Logout</string>
     <string name="title_activity_requirement">RequirementActivity</string>
+    <string name="number_of_infants_2_yr"><![CDATA[Number of Infants (<2 yr )]]></string>
+    <string name="add_requirement">Add \n Requirement</string>
 </resources>
