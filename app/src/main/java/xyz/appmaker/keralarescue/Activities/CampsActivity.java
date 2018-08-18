@@ -42,8 +42,6 @@ import xyz.appmaker.keralarescue.Tools.Misc;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class CampsActivity extends AppCompatActivity {
-
-
     private RecyclerView mRecyclerView;
     private CampRecycleViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;

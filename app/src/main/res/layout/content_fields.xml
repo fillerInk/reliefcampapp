@@ -8,28 +8,31 @@
     tools:context=".Activities.FieldsActivity"
     tools:showIn="@layout/activity_fields">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="20dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="20dp">
 
             <LinearLayout
                 android:id="@+id/title_container"
                 android:layout_width="match_parent"
-                android:weightSum="4"
-                android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="3"
-                android:layout_weight="3"
-                android:layout_alignParentTop="true"
-                android:text="person_registration"
-                android:textSize="20dp" />
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_weight="3"
+                    android:lines="3"
+                    android:text="person_registration"
+                    android:textSize="20dp" />
+
                 <Button
                     android:id="@+id/btn_req"
                     android:layout_width="wrap_content"
@@ -37,7 +40,7 @@
                     android:layout_weight="1"
                     android:lines="2"
                     android:text="@string/add_requirement"
-                    />
+                    android:visibility="gone" />
             </LinearLayout>
             <!--  <TextView
                   android:id="@+id/camp_title"
@@ -67,102 +70,96 @@
                 android:layout_marginTop="20dp"
                 android:hint="Name"
                 android:singleLine="true" />
+
             <EditText
                 android:id="@+id/mobile"
-                android:layout_below="@+id/name"
-                android:layout_marginTop="20dp"
-                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/name"
+                android:layout_marginTop="20dp"
                 android:hint="@string/mobile"
-                />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/mobile"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:inputType="number"
-                android:layout_height="wrap_content"
                 android:hint="Age"
-                />
+                android:inputType="number" />
+
             <TextView
                 android:id="@+id/gender_title"
-                android:layout_below="@+id/age"
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/age"
+                android:layout_marginTop="20dp"
                 android:text="@string/gender"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
+
             <Spinner
                 android:id="@+id/gender"
-                android:layout_below="@+id/gender_title"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </Spinner>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/gender_title"
+                android:layout_marginTop="10dp"></Spinner>
 
             <TextView
                 android:id="@+id/district_title"
-                android:layout_below="@+id/gender"
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/gender"
+                android:layout_marginTop="20dp"
                 android:text="@string/district"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/district"
-                android:layout_below="@+id/district_title"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </Spinner>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/district_title"
+                android:layout_marginTop="20dp"></Spinner>
 
             <EditText
                 android:id="@+id/address"
-                android:layout_below="@+id/district"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:hint="@string/address"
-                />
+                android:layout_below="@+id/district"
+                android:layout_marginTop="20dp"
+                android:hint="@string/address" />
 
 
             <EditText
                 android:id="@+id/note"
-                android:layout_below="@+id/address"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:hint="@string/note"
-                />
+                android:layout_below="@+id/address"
+                android:layout_marginTop="20dp"
+                android:hint="@string/note" />
 
             <Button
                 android:id="@+id/submit"
-                android:layout_below="@+id/note"
                 android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/note"
+                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="20dp"
-                android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/holo_red_dark"
-                android:layout_height="60dp"
-                android:layout_centerHorizontal="true"
                 android:text="@string/submit"
-                />
+                android:textColor="@android:color/white" />
 
         </RelativeLayout>
-</ScrollView>
+    </ScrollView>
 
     <TextView
         android:id="@+id/syncDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:text="99 Pending - 100 synced" />
 </RelativeLayout>

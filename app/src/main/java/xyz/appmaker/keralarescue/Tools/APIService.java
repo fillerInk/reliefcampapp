@@ -29,11 +29,11 @@ public interface APIService {
     @POST("api/1/persons/")
     Call<PersonsResponse> addPersons(@Header("Authorization") String authorization, @Body List<PersonDataEntity> personDataEntities);
 
-    @GET("api/1/camplist/{id}")
-    Call<CampNames> getCamp(@Header("Authorization") String authorization, @Path("id") String id);
+    @GET("api/1/camps/{id}")
+    Call<UpdateCamp> getCamp(@Header("Authorization") String authorization, @Path("id") String id);
 
-    @PUT("api/1/camplist/{id}")
-    Call<CampNames> updateCamp(@Header("Authorization") String authorization, @Path("id") String id, @Body UpdateCamp updateCamp);
+    @PUT("api/1/camps/{id}")
+    Call<UpdateCamp> updateCamp(@Header("Authorization") String authorization, @Path("id") String id, @Body UpdateCamp updateCamp);
 
 
 }

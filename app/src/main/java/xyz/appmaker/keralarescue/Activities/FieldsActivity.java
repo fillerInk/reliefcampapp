@@ -81,8 +81,8 @@ public class FieldsActivity extends AppCompatActivity {
         dbInstance = CampDatabase.getDatabase(context);
         apiService = AppController.getRetrofitInstance();
         campSelectedValue = getIntent().getStringExtra("campId");
-        titleText= (TextView) findViewById(R.id.title);
-        if(pref.getRecentCampID() != -1) {
+        titleText = (TextView) findViewById(R.id.title);
+        if (pref.getRecentCampID() != -1) {
             titleText.setText(pref.getRecentCamp());
         }
         // Gender spinner
@@ -116,6 +116,7 @@ public class FieldsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent reqAct = new Intent(FieldsActivity.this, RequirementActivity.class);
+                reqAct.putExtra("campId", getIntent().getStringExtra("campId"));
                 startActivity(reqAct);
             }
         });
