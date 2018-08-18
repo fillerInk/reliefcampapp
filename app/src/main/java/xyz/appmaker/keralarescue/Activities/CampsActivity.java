@@ -60,7 +60,7 @@ public class CampsActivity extends AppCompatActivity {
         context = getApplicationContext();
         pref = new PreferensHandler(context);
         districtSpinner = findViewById(R.id.spinner_district);
-        ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
+        final ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
                 android.R.layout.simple_spinner_item, Misc.getStates());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dbInstance = CampDatabase.getDatabase(context);
@@ -97,7 +97,9 @@ public class CampsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 // Log.e("TAG","onItem final call"+position);
+                CampNames camp = campNames.get(position);
                 Intent fieldIntent = new Intent(CampsActivity.this, FieldsActivity.class);
+                fieldIntent.putExtra("campId", String.valueOf(camp.getId()));
                 startActivity(fieldIntent);
             }
         };
@@ -116,11 +118,10 @@ public class CampsActivity extends AppCompatActivity {
                 List<CampNames> items = response.body();
 
                 if (items != null && items.size() > 0) {
-                    String name = items.get(0).getName();
-                    Toast.makeText(getApplicationContext(), name, Toast.LENGTH_LONG).show();
+
                     insetCampDb(items);
                 }
-                loadCamps(district);
+
             }
 
             @Override
@@ -139,6 +140,12 @@ public class CampsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 dbInstance.campDao().insertCapms(var);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadCamps(var.get(0).getDistrict());
+                    }
+                });
 
             }
         }).start();
@@ -184,7 +191,7 @@ public class CampsActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
 
         if (id == R.id.action_logout) {
-            Toast.makeText(this, "Loging out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
             logoutUser();
 
             return true;
