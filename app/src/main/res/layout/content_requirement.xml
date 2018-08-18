@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,4 +8,62 @@
     tools:context=".Activities.RequirementActivity"
     tools:showIn="@layout/activity_requirement">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/person_registration"
+            android:layout_centerHorizontal="true"
+            android:textSize="25dp"
+            />
+
+        <EditText
+            android:layout_below="@+id/title"
+            android:id="@+id/name"
+
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            />
+
+        <EditText
+            android:id="@+id/age"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:layout_height="wrap_content"
+            android:hint="Age"
+            />
+
+
+
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_below="@+id/note"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/submit"
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

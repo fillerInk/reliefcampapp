@@ -95,6 +95,7 @@ public class CampsActivity extends AppCompatActivity {
                 States states = (States) parent.getSelectedItem();
                 districtSelectedValue = states.getId();
                 updateCamps(districtSelectedValue);
+                searchResult.clear();
             }
 
             @Override
@@ -117,8 +118,12 @@ public class CampsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int position) {
                 // Log.e("TAG","onItem final call"+position);
-
                 CampNames camp = campNames.get(position);
+
+                if(searchResult.size() > 0){
+                     camp = searchResult.get(position);
+                }
+
                 if(pref != null ){
                     pref.setRecentCampID(camp.getId());
                     pref.setRecentCamp(camp.getName());
@@ -227,18 +232,18 @@ public class CampsActivity extends AppCompatActivity {
 
     public  void loadSearchedCamp( String search) {
         Log.e("TAG","load search "+search);
-
+        searchResult.clear();
         if(search.equals("")){
             mAdapter.updateDataset(campNames);
             return;
         }
-        searchResult.clear();
 
         for (CampNames names: campNames) {
             if(names.getName().toLowerCase().contains(search.toLowerCase())){
                 searchResult.add(names);
             }
         }
+
         mAdapter.updateDataset(searchResult);
 
         // return searchResult;
