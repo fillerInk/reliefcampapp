@@ -82,7 +82,7 @@ public class CampsActivity extends AppCompatActivity {
         edtSearch = (EditText) findViewById(R.id.edt_search_camp);
         dbInstance = CampDatabase.getDatabase(context);
         districtAdapter = new ArrayAdapter<States>(this,
-                android.R.layout.simple_spinner_item, districtArray);
+                android.R.layout.simple_spinner_item, Misc.getStates());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // districtSpinner
         districtSpinner.setAdapter(districtAdapter);

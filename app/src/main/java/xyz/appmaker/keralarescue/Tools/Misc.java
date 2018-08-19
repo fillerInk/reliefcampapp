@@ -1,5 +1,7 @@
 package xyz.appmaker.keralarescue.Tools;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,9 @@ public class Misc {
     static ArrayList<States> statesList = new ArrayList<>();
 
 
-    public static ArrayList<States> getStates(){
+    public static ArrayList<States> getStates() {
+        if (statesList.size() > 0)
+            return statesList;
         // Districts Spinner
         statesList.add(new States("", "-"));
         statesList.add(new States("tvm", "Thiruvananthapuram"));
