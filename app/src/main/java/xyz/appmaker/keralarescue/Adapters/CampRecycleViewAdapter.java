@@ -58,7 +58,8 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                // Log.e("TAG","onClick Recycle view "+vh.getPosition());
-                listener.onItemClick(v, vh.getPosition());
+
+                listener.onItemClick(v, vh.getAdapterPosition());
             }
         });
         return vh;

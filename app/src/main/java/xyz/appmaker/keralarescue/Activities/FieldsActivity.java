@@ -240,52 +240,6 @@ public class FieldsActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void loadPersons() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<PersonDataEntity> personDataEntities = dbInstance.personDataDao().getAllPersons();
-                PersonDataEntity personDataEntity = personDataEntities.get(0);
-
-                List<PersonDataEntity> personDataUnsyncedEntities = dbInstance.personDataDao().getUnSyncedPersons();
-                PersonDataEntity personDataUnsyncedEntitie = personDataEntities.get(0);
-            }
-        }).start();
-    }
-
-    public void loadCamps() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                campList = (ArrayList<CampNames>) dbInstance.campDao().getAllCamps();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ArrayAdapter<CampNames> campListArrayAdapter = new ArrayAdapter<CampNames>(FieldsActivity.this,
-                                android.R.layout.simple_spinner_item, campList);
-                        if (campList.size() > 0)
-                            campSelectedValue = String.valueOf(campList.get(0).getId());
-                        campListArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        campNameSpn.setAdapter(campListArrayAdapter);
-                        campNameSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                //stateSelectedValue
-                                CampNames campName = (CampNames) parent.getSelectedItem();
-                                campSelectedValue = String.valueOf(campName.getId());
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-
-                            }
-                        });
-                    }
-                });
-            }
-        }).start();
-
-    }
 
     public boolean validateData() {
         if (nameEdt.getText().toString().equals("")) {
@@ -326,6 +280,7 @@ public class FieldsActivity extends AppCompatActivity {
         addressEdt.setText("");
         mobileEdt.setText("");
         notesEdt.setText("");
+        nameEdt.requestFocus();
 //        nameEdt.setText("");
 
     }

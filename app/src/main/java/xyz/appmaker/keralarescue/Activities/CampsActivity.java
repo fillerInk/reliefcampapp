@@ -58,8 +58,9 @@ public class CampsActivity extends AppCompatActivity {
     Button btnRecent, btnSearch;
     static final ArrayList<States> districtArray = Misc.getStates();
 
-      ArrayAdapter<States> districtAdapter;
-      CardView recentCardview;
+    ArrayAdapter<States> districtAdapter;
+    CardView recentCardview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,7 @@ public class CampsActivity extends AppCompatActivity {
         districtAdapter = new ArrayAdapter<States>(this,
                 android.R.layout.simple_spinner_item, districtArray);
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-       // districtSpinner
+        // districtSpinner
         districtSpinner.setAdapter(districtAdapter);
         apiService = AppController.getRetrofitInstance();
 
@@ -118,11 +119,11 @@ public class CampsActivity extends AppCompatActivity {
                 // Log.e("TAG","onItem final call"+position);
                 CampNames camp = campNames.get(position);
 
-                if(searchResult.size() > 0){
-                     camp = searchResult.get(position);
+                if (searchResult.size() > 0) {
+                    camp = searchResult.get(position);
                 }
 
-                if(pref != null ){
+                if (pref != null) {
                     pref.setRecentCampID(camp.getId());
                     pref.setRecentCamp(camp.getName());
                 }
@@ -133,29 +134,11 @@ public class CampsActivity extends AppCompatActivity {
         };
         mAdapter = new CampRecycleViewAdapter(recycleItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
-        // specify an adapter (see also next example)
-       /* edtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loadSearchedCamp(s.toString());
-            }
-        });*/
-//        loadCamps("tvm");
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtSearch != null && edtSearch.getText() != null) {
+                if (edtSearch != null && edtSearch.getText() != null) {
                     loadSearchedCamp(edtSearch.getText().toString());
                 }
             }
@@ -165,6 +148,8 @@ public class CampsActivity extends AppCompatActivity {
 
 
     public void updateCamps(final String district) {
+        if (district.equals(""))
+            return;
         Call<List<CampNames>> response = apiService.getCampList(authToken(), district);
         response.enqueue(new Callback<List<CampNames>>() {
             @Override
@@ -216,9 +201,8 @@ public class CampsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //mAdapter.upda(campNames);
-                      //  mRecyclerView.setAdapter(mAdapter);
+                        //  mRecyclerView.setAdapter(mAdapter);
                         mAdapter.updateDataset(campNames);
-
 
 
                     }
@@ -228,16 +212,16 @@ public class CampsActivity extends AppCompatActivity {
 
     }
 
-    public  void loadSearchedCamp( String search) {
-        Log.e("TAG","load search "+search);
+    public void loadSearchedCamp(String search) {
+        Log.e("TAG", "load search " + search);
         searchResult.clear();
-        if(search.equals("")){
+        if (search.equals("")) {
             mAdapter.updateDataset(campNames);
             return;
         }
 
-        for (CampNames names: campNames) {
-            if(names.getName().toLowerCase().contains(search.toLowerCase())){
+        for (CampNames names : campNames) {
+            if (names.getName().toLowerCase().contains(search.toLowerCase())) {
                 searchResult.add(names);
             }
         }
@@ -251,8 +235,8 @@ public class CampsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("TAG"," onResume ");
-        if(pref.getRecentCampID() != -1){
+        Log.e("TAG", " onResume ");
+        if (pref.getRecentCampID() != -1) {
             btnRecent.setText(pref.getRecentCamp());
             btnRecent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -263,7 +247,7 @@ public class CampsActivity extends AppCompatActivity {
                 }
             });
             recentCardview.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             recentCardview.setVisibility(View.GONE);
         }
 
