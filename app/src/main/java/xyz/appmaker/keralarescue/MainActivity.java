@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (response.isSuccessful()) {
                             prefs.setUserToken(response.body().token);
+                            prefs.setUsername(username);
                             mFirebaseAnalytics.setUserId(username);
                             Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
                             Intent fieldsAct = new Intent(MainActivity.this, CampsActivity.class);

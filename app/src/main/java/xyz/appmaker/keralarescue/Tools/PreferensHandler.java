@@ -16,6 +16,8 @@ public class PreferensHandler {
 
     final String camp_def = "camp_def";
     final String userTokenKey = "user_token";
+    final String user_name = "user_name";
+
 
 
     @SuppressLint("CommitPrefEdits")
@@ -43,6 +45,7 @@ public class PreferensHandler {
         editor.commit();
     }
 
+    //  Recent camp selection
     public void setRecentCampID(int var) {
         editor.putInt(recent_camp_id, var);
         editor.commit();
@@ -52,6 +55,7 @@ public class PreferensHandler {
         return pref.getInt(recent_camp_id, -1);
     }
 
+    // Camp details
     public void setRecentCamp(String var) {
         editor.putString(recent_camp_name, var);
         editor.commit();
@@ -59,6 +63,17 @@ public class PreferensHandler {
 
     public String getRecentCamp() {
         return pref.getString(recent_camp_name, "");
+    }
+
+
+    // Username
+    public void setUsername(String var) {
+        editor.putString(user_name, var);
+        editor.commit();
+    }
+
+    public String getUsername() {
+        return pref.getString(user_name, "");
     }
 
 }
