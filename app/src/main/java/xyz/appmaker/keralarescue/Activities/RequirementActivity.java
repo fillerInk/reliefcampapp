@@ -135,7 +135,7 @@ public class RequirementActivity extends AppCompatActivity {
                     medicalEditText.setText(camp.medical_req);
                     otherEditText.setText(camp.other_req);*/
                 }
-                Toast.makeText(getApplicationContext(), "Something went wrong! ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Please enter all the fields! ", Toast.LENGTH_LONG).show();
             }
 
             @Override
