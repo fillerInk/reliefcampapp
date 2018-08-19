@@ -299,15 +299,16 @@ public class CampsActivity extends AppCompatActivity {
         }
         if (id == R.id.action_backup) {
             Toast.makeText(this, "Database is uploading", Toast.LENGTH_SHORT).show();
-            String dbPath = dbInstance.getOpenHelper().getReadableDatabase().getPath();
+            String dbPath = dbInstance.getOpenHelper().getWritableDatabase().getPath();
             String deviceID = pref.getDeviceID();
             // Create a storage reference from our app
             StorageReference storageRef = storage.getReference();
 
 // Create a reference to "mountains.jpg"
-            StorageReference databaseRef = storageRef.child("db/" + deviceID);
+            StorageReference databaseRef = storageRef.child("db/" + pref.getUsername() + "/" + deviceID);
             InputStream stream = null;
             try {
+                Log.d("dbPath", dbPath);
                 stream = new FileInputStream(new File(dbPath));
                 UploadTask uploadTask = databaseRef.putStream(stream);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
