@@ -3,6 +3,7 @@ package xyz.appmaker.keralarescue.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,6 +26,16 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +74,7 @@ public class CampsActivity extends AppCompatActivity {
 
     ArrayAdapter<States> districtAdapter;
     CardView recentCardview;
+    FirebaseStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +89,7 @@ public class CampsActivity extends AppCompatActivity {
         btnSearch = (Button) findViewById(R.id.search_btn);
         recentCardview = (CardView) findViewById(R.id.recent_card_view);
         progressBar = findViewById(R.id.progressBar);
-
+        storage = FirebaseStorage.getInstance();
 
         districtSpinner = findViewById(R.id.spinner_district);
         edtSearch = (EditText) findViewById(R.id.edt_search_camp);
@@ -87,7 +100,7 @@ public class CampsActivity extends AppCompatActivity {
         // districtSpinner
         districtSpinner.setAdapter(districtAdapter);
         apiService = AppController.getRetrofitInstance();
-
+        Log.d("INSTANCE", dbInstance.getOpenHelper().getReadableDatabase().getPath());
 
         districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -281,6 +294,38 @@ public class CampsActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             Toast.makeText(this, "Logging out", Toast.LENGTH_SHORT).show();
             logoutUser();
+
+            return true;
+        }
+        if (id == R.id.action_backup) {
+            Toast.makeText(this, "Database is uploading", Toast.LENGTH_SHORT).show();
+            String dbPath = dbInstance.getOpenHelper().getReadableDatabase().getPath();
+            String deviceID = pref.getDeviceID();
+            // Create a storage reference from our app
+            StorageReference storageRef = storage.getReference();
+
+// Create a reference to "mountains.jpg"
+            StorageReference databaseRef = storageRef.child("db/" + deviceID);
+            InputStream stream = null;
+            try {
+                stream = new FileInputStream(new File(dbPath));
+                UploadTask uploadTask = databaseRef.putStream(stream);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Toast.makeText(CampsActivity.this, "Database update failed", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(CampsActivity.this, "Database updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
 
             return true;
         }
