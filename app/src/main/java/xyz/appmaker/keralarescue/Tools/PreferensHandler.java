@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.UUID;
+
 public class PreferensHandler {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -30,6 +32,18 @@ public class PreferensHandler {
     public void setDistrictDef(int var) {
         editor.putInt(district_def, var);
         editor.commit();
+    }
+
+    public String getDeviceID() {
+        String KEY = "device_id";
+        String id = pref.getString(KEY, "");
+        if (id.equals("")) {
+            id = UUID.randomUUID().toString();
+            editor.putString(KEY, id);
+            editor.commit();
+            return id;
+        }
+        return id;
     }
 
     public int getDistrictDef() {
