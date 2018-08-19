@@ -59,6 +59,7 @@ public class RequirementActivity extends AppCompatActivity {
         apiService = AppController.getRetrofitInstance();
         pref = new PreferensHandler(getApplicationContext());
         String campID = getIntent().getStringExtra("campId");
+//        campID = "5";
         apiService.getCamp(authToken(), campID).enqueue(new Callback<UpdateCamp>() {
             @Override
             public void onResponse(Call<UpdateCamp> call, Response<UpdateCamp> response) {

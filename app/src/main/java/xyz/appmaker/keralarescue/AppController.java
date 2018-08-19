@@ -45,7 +45,7 @@ public class AppController extends Application {
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS);
 
-
+        httpClient.addInterceptor(logging);
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
