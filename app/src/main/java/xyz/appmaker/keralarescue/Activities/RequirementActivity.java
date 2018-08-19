@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ public class RequirementActivity extends AppCompatActivity {
     private APIService apiService;
     private PreferensHandler pref;
     String campID;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class RequirementActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        progressBar = (ProgressBar)  findViewById(R.id.loading_req);
         totalPeopleEditText = findViewById(R.id.number_people);
         maleEditText = findViewById(R.id.number_males);
         femaleEditText = findViewById(R.id.number_females);
@@ -64,13 +68,15 @@ public class RequirementActivity extends AppCompatActivity {
         pref = new PreferensHandler(getApplicationContext());
 
 //        campID = "5";
+        progressBar.setVisibility(View.VISIBLE);
         apiService.getCamp(authToken(), campID).enqueue(new Callback<UpdateCamp>() {
             @Override
             public void onResponse(Call<UpdateCamp> call, Response<UpdateCamp> response) {
-                Log.e("TAG","tocken "+authToken());
+                //Log.e("TAG","tocken "+authToken());
 
                 if (response.isSuccessful()) {
                     UpdateCamp camp = response.body();
+                    totalPeopleEditText.setText(camp.total_people);
                     maleEditText.setText(camp.total_males);
                     femaleEditText.setText(camp.total_females);
                     infantsEditText.setText(camp.total_infants);
@@ -80,10 +86,14 @@ public class RequirementActivity extends AppCompatActivity {
                     medicalEditText.setText(camp.medical_req);
                     otherEditText.setText(camp.other_req);
                 }
+                progressBar.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onFailure(Call<UpdateCamp> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "Failed to receive data", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -93,6 +103,8 @@ public class RequirementActivity extends AppCompatActivity {
 
 
     public void updateData(){
+        progressBar.setVisibility(View.VISIBLE);
+
         UpdateCamp updateCamp = new UpdateCamp();
         updateCamp.total_people = totalPeopleEditText.getText().toString();
         updateCamp.total_males = maleEditText.getText().toString();
@@ -107,9 +119,12 @@ public class RequirementActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UpdateCamp> call, Response<UpdateCamp> response) {
                 Log.e("TAG","on response update data "+response);
+                progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful()) {
                     Log.e("TAG","on response siccc data "+response);
+                    Toast.makeText(getApplicationContext(), "Data updated Successfully", Toast.LENGTH_LONG).show();
+
                    /* UpdateCamp camp = response.body();
                     maleEditText.setText(camp.total_males);
                     femaleEditText.setText(camp.total_females);
@@ -120,11 +135,14 @@ public class RequirementActivity extends AppCompatActivity {
                     medicalEditText.setText(camp.medical_req);
                     otherEditText.setText(camp.other_req);*/
                 }
+                Toast.makeText(getApplicationContext(), "Something went wrong! ", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<UpdateCamp> call, Throwable t) {
                 Log.e("TAG","on Error update data "+t);
+                Toast.makeText(getApplicationContext(), "Failed to update data", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
 
             }
         });
