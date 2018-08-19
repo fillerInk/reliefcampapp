@@ -18,7 +18,6 @@
         android:layout_height="match_parent">
 
 
-
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -27,6 +26,8 @@
             android:layout_centerHorizontal="true"
             android:textSize="25dp"
             />
+
+
 
         <EditText
             android:layout_below="@+id/title"
@@ -42,7 +43,6 @@
             android:layout_below="@+id/number_people"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Number of Males"
             />
@@ -52,7 +52,6 @@
             android:layout_below="@+id/number_males"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Number of Females"
             />
@@ -62,7 +61,6 @@
             android:layout_below="@+id/number_females"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="@string/number_of_infants_2_yr"
             />
@@ -73,7 +71,6 @@
             android:layout_below="@+id/number_infants"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Food"
             />
@@ -83,7 +80,6 @@
             android:layout_below="@+id/food"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Clothing"
             />
@@ -93,7 +89,6 @@
             android:layout_below="@+id/clothing"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Sanitary"
             />
@@ -104,7 +99,6 @@
             android:layout_below="@+id/sanitary"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Medical"
             />
@@ -115,7 +109,6 @@
             android:layout_below="@+id/medical"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:inputType="number"
             android:layout_height="wrap_content"
             android:hint="Other"
             />

@@ -1,6 +1,7 @@
 package xyz.appmaker.keralarescue.Models;
 
 public class UpdateCamp {
+    public String total_people;
     public String total_males;
     public String total_females;
     public String total_infants;

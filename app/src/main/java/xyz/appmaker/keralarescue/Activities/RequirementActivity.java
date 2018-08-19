@@ -5,8 +5,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,6 +34,7 @@ public class RequirementActivity extends AppCompatActivity {
     EditText otherEditText;
     private APIService apiService;
     private PreferensHandler pref;
+    String campID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +52,23 @@ public class RequirementActivity extends AppCompatActivity {
         sanitaryEditText = findViewById(R.id.sanitary);
         medicalEditText = findViewById(R.id.medical);
         otherEditText = findViewById(R.id.other);
-
+        campID = getIntent().getStringExtra("campId");
         findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                updateData();
             }
         });
 
         apiService = AppController.getRetrofitInstance();
         pref = new PreferensHandler(getApplicationContext());
-        String campID = getIntent().getStringExtra("campId");
+
 //        campID = "5";
         apiService.getCamp(authToken(), campID).enqueue(new Callback<UpdateCamp>() {
             @Override
             public void onResponse(Call<UpdateCamp> call, Response<UpdateCamp> response) {
+                Log.e("TAG","tocken "+authToken());
+
                 if (response.isSuccessful()) {
                     UpdateCamp camp = response.body();
                     maleEditText.setText(camp.total_males);
@@ -85,7 +91,47 @@ public class RequirementActivity extends AppCompatActivity {
 
     }
 
+
+    public void updateData(){
+        UpdateCamp updateCamp = new UpdateCamp();
+        updateCamp.total_people = totalPeopleEditText.getText().toString();
+        updateCamp.total_males = maleEditText.getText().toString();
+        updateCamp.total_females = femaleEditText.getText().toString();
+        updateCamp.total_infants =infantsEditText.getText().toString();
+        updateCamp.food_req = foodEditText.getText().toString();
+        updateCamp.clothing_req = clothingEditText.getText().toString();
+        updateCamp.sanitary_req = sanitaryEditText.getText().toString();
+        updateCamp.medical_req = medicalEditText.getText().toString();
+        updateCamp.other_req = otherEditText.getText().toString();
+        apiService.updateCamp(authToken(), campID, updateCamp).enqueue(new Callback<UpdateCamp>() {
+            @Override
+            public void onResponse(Call<UpdateCamp> call, Response<UpdateCamp> response) {
+                Log.e("TAG","on response update data "+response);
+
+                if (response.isSuccessful()) {
+                    Log.e("TAG","on response siccc data "+response);
+                   /* UpdateCamp camp = response.body();
+                    maleEditText.setText(camp.total_males);
+                    femaleEditText.setText(camp.total_females);
+                    infantsEditText.setText(camp.total_infants);
+                    foodEditText.setText(camp.food_req);
+                    clothingEditText.setText(camp.clothing_req);
+                    sanitaryEditText.setText(camp.sanitary_req);
+                    medicalEditText.setText(camp.medical_req);
+                    otherEditText.setText(camp.other_req);*/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateCamp> call, Throwable t) {
+                Log.e("TAG","on Error update data "+t);
+
+            }
+        });
+    }
+
     public String authToken() {
+
         return "JWT " + pref.getUserToken();
     }
 

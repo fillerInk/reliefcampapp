@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -29,10 +30,10 @@ public interface APIService {
     @POST("api/1/persons/")
     Call<PersonsResponse> addPersons(@Header("Authorization") String authorization, @Body List<PersonDataEntity> personDataEntities);
 
-    @GET("api/1/camps/{id}")
+    @GET("api/1/camps/{id}/")
     Call<UpdateCamp> getCamp(@Header("Authorization") String authorization, @Path("id") String id);
 
-    @PUT("api/1/camps/{id}")
+    @PATCH("api/1/camps/{id}/")
     Call<UpdateCamp> updateCamp(@Header("Authorization") String authorization, @Path("id") String id, @Body UpdateCamp updateCamp);
 
 
