@@ -23,21 +23,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Requirment"
+            android:focusedByDefault="true"
             android:layout_centerHorizontal="true"
             android:textSize="25dp"
             />
 
-
+        <android.support.design.widget.TextInputLayout
+            android:layout_below="@+id/title"
+            android:id="@+id/input_layout_number_people"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <EditText
-            android:layout_below="@+id/title"
             android:id="@+id/number_people"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Total number of people"
             />
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_number_males"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_number_people"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/number_males"
             android:layout_below="@+id/number_people"
@@ -46,7 +56,13 @@
             android:layout_height="wrap_content"
             android:hint="Number of Males"
             />
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_number_females"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_number_males"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/number_females"
             android:layout_below="@+id/number_males"
@@ -55,7 +71,13 @@
             android:layout_height="wrap_content"
             android:hint="Number of Females"
             />
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_number_infants"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_number_females"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/number_infants"
             android:layout_below="@+id/number_females"
@@ -64,8 +86,14 @@
             android:layout_height="wrap_content"
             android:hint="@string/number_of_infants_2_yr"
             />
+        </android.support.design.widget.TextInputLayout>
 
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_food"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_number_infants"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/food"
             android:layout_below="@+id/number_infants"
@@ -74,7 +102,14 @@
             android:layout_height="wrap_content"
             android:hint="Food"
             />
+        </android.support.design.widget.TextInputLayout>
 
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_clothing"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_food"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/clothing"
             android:layout_below="@+id/food"
@@ -83,7 +118,13 @@
             android:layout_height="wrap_content"
             android:hint="Clothing"
             />
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_sanitary"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_clothing"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/sanitary"
             android:layout_below="@+id/clothing"
@@ -92,8 +133,13 @@
             android:layout_height="wrap_content"
             android:hint="Sanitary"
             />
+        </android.support.design.widget.TextInputLayout>
 
-
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_medical"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_sanitary"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/medical"
             android:layout_below="@+id/sanitary"
@@ -102,8 +148,13 @@
             android:layout_height="wrap_content"
             android:hint="Medical"
             />
+        </android.support.design.widget.TextInputLayout>
 
-
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_other"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/input_layout_medical"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/other"
             android:layout_below="@+id/medical"
@@ -112,13 +163,14 @@
             android:layout_height="wrap_content"
             android:hint="Other"
             />
+        </android.support.design.widget.TextInputLayout>
 
 
 
 
           <Button
               android:id="@+id/submit"
-              android:layout_below="@+id/other"
+              android:layout_below="@+id/input_layout_other"
               android:layout_width="match_parent"
               android:layout_marginBottom="30dp"
               android:layout_marginTop="20dp"
