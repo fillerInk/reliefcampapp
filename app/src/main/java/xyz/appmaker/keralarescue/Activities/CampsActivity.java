@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class CampsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
+    private ProgressBar progressBar;
     private CampRecycleViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     List<CampNames> campNames = new ArrayList<>();
@@ -73,6 +75,7 @@ public class CampsActivity extends AppCompatActivity {
 
         btnSearch = (Button) findViewById(R.id.search_btn);
         recentCardview = (CardView) findViewById(R.id.recent_card_view);
+        progressBar = findViewById(R.id.progressBar);
 
 
         districtSpinner = findViewById(R.id.spinner_district);
@@ -150,6 +153,7 @@ public class CampsActivity extends AppCompatActivity {
     public void updateCamps(final String district) {
         if (district.equals(""))
             return;
+        progressBar.setVisibility(View.VISIBLE);
         Call<List<CampNames>> response = apiService.getCampList(authToken(), district);
         response.enqueue(new Callback<List<CampNames>>() {
             @Override
@@ -162,13 +166,14 @@ public class CampsActivity extends AppCompatActivity {
 
                     insetCampDb(items);
                 }
+                progressBar.setVisibility(View.GONE);
 
             }
 
             @Override
             public void onFailure(Call<List<CampNames>> call, Throwable t) {
                 Log.e("TAG", "fail response ");
-
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

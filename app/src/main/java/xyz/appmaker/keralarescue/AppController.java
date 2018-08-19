@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.onesignal.OneSignal;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -39,7 +40,11 @@ public class AppController extends Application {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);  // <-- this is the important line!
+
+        httpClient.connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS);
+
 
         httpClient.addInterceptor(new Interceptor() {
             @Override
