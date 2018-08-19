@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -65,14 +67,14 @@ public class FieldsActivity extends AppCompatActivity {
     APIService apiService;
     TextView titleText;
     Button btnReq;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fields);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         pref = new PreferensHandler(context);
@@ -173,6 +175,9 @@ public class FieldsActivity extends AppCompatActivity {
                             notesEdt.getText().toString(),
                             "0");
                     insetPersonDb(personDataModel);
+                    Bundle params = new Bundle();
+                    params.putString("district", pref.getRecentCamp());
+                    mFirebaseAnalytics.logEvent("person_added", params);
                 }
             }
         });

@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                String username = usernameEditText.getText().toString();
+                final String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String message = "";
                 if (username.equals("")) {
@@ -87,10 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 userResponseCall.enqueue(new Callback<UserResponse>() {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+
                         progressBar.setVisibility(View.GONE);
 
                         if (response.isSuccessful()) {
                             prefs.setUserToken(response.body().token);
+                            mFirebaseAnalytics.setUserId(username);
                             Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
                             Intent fieldsAct = new Intent(MainActivity.this, CampsActivity.class);
                             startActivity(fieldsAct);
