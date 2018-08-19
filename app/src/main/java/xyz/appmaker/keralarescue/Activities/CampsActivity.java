@@ -47,7 +47,6 @@ import xyz.appmaker.keralarescue.Room.Camp.CampNames;
 import xyz.appmaker.keralarescue.Room.CampDatabase;
 import xyz.appmaker.keralarescue.Tools.APIService;
 import xyz.appmaker.keralarescue.Tools.Config;
-import xyz.appmaker.keralarescue.Tools.Misc;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class CampsActivity extends AppCompatActivity {

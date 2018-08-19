@@ -46,7 +46,7 @@ public class RequirementActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        progressBar = (ProgressBar)  findViewById(R.id.loading_req);
+        progressBar = (ProgressBar) findViewById(R.id.loading_req);
         totalPeopleEditText = findViewById(R.id.number_people);
         maleEditText = findViewById(R.id.number_males);
         femaleEditText = findViewById(R.id.number_females);
@@ -102,14 +102,14 @@ public class RequirementActivity extends AppCompatActivity {
     }
 
 
-    public void updateData(){
+    public void updateData() {
         progressBar.setVisibility(View.VISIBLE);
 
         UpdateCamp updateCamp = new UpdateCamp();
         updateCamp.total_people = totalPeopleEditText.getText().toString();
         updateCamp.total_males = maleEditText.getText().toString();
         updateCamp.total_females = femaleEditText.getText().toString();
-        updateCamp.total_infants =infantsEditText.getText().toString();
+        updateCamp.total_infants = infantsEditText.getText().toString();
         updateCamp.food_req = foodEditText.getText().toString();
         updateCamp.clothing_req = clothingEditText.getText().toString();
         updateCamp.sanitary_req = sanitaryEditText.getText().toString();
@@ -118,11 +118,11 @@ public class RequirementActivity extends AppCompatActivity {
         apiService.updateCamp(authToken(), campID, updateCamp).enqueue(new Callback<UpdateCamp>() {
             @Override
             public void onResponse(Call<UpdateCamp> call, Response<UpdateCamp> response) {
-                Log.e("TAG","on response update data "+response);
+                Log.e("TAG", "on response update data " + response);
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful()) {
-                    Log.e("TAG","on response siccc data "+response);
+                    Log.e("TAG", "on response siccc data " + response);
                     Toast.makeText(getApplicationContext(), "Data updated Successfully", Toast.LENGTH_LONG).show();
 
                    /* UpdateCamp camp = response.body();
@@ -134,13 +134,13 @@ public class RequirementActivity extends AppCompatActivity {
                     sanitaryEditText.setText(camp.sanitary_req);
                     medicalEditText.setText(camp.medical_req);
                     otherEditText.setText(camp.other_req);*/
-                }
-                Toast.makeText(getApplicationContext(), "Something went wrong! ", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "Something went wrong! ", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<UpdateCamp> call, Throwable t) {
-                Log.e("TAG","on Error update data "+t);
+                Log.e("TAG", "on Error update data " + t);
                 Toast.makeText(getApplicationContext(), "Failed to update data", Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
 
