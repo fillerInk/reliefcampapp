@@ -4,16 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,11 +41,12 @@ import xyz.appmaker.keralarescue.Adapters.CampRecycleViewAdapter;
 import xyz.appmaker.keralarescue.AppController;
 import xyz.appmaker.keralarescue.Interfaces.RecycleItemClickListener;
 import xyz.appmaker.keralarescue.MainActivity;
-import xyz.appmaker.keralarescue.Models.States;
+import xyz.appmaker.keralarescue.Models.District;
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
 import xyz.appmaker.keralarescue.Room.CampDatabase;
 import xyz.appmaker.keralarescue.Tools.APIService;
+import xyz.appmaker.keralarescue.Tools.Config;
 import xyz.appmaker.keralarescue.Tools.Misc;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
@@ -70,9 +66,8 @@ public class CampsActivity extends AppCompatActivity {
     List<CampNames> searchResult = new ArrayList<>();
     EditText edtSearch;
     Button btnRecent, btnSearch;
-    static final ArrayList<States> districtArray = Misc.getStates();
 
-    ArrayAdapter<States> districtAdapter;
+    ArrayAdapter<District> districtAdapter;
     CardView recentCardview;
     FirebaseStorage storage;
 
@@ -94,8 +89,8 @@ public class CampsActivity extends AppCompatActivity {
         districtSpinner = findViewById(R.id.spinner_district);
         edtSearch = (EditText) findViewById(R.id.edt_search_camp);
         dbInstance = CampDatabase.getDatabase(context);
-        districtAdapter = new ArrayAdapter<States>(this,
-                android.R.layout.simple_spinner_item, Misc.getStates());
+        districtAdapter = new ArrayAdapter<District>(this,
+                android.R.layout.simple_spinner_item, Config.getDistricts());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // districtSpinner
         districtSpinner.setAdapter(districtAdapter);
@@ -107,8 +102,8 @@ public class CampsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // TO-DO
                 // make network call for camp list
-                States states = (States) parent.getSelectedItem();
-                districtSelectedValue = states.getId();
+                District district = (District) parent.getSelectedItem();
+                districtSelectedValue = district.getId();
                 updateCamps(districtSelectedValue);
                 searchResult.clear();
             }

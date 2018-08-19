@@ -20,27 +20,27 @@
             <LinearLayout
                 android:id="@+id/title_container"
                 android:layout_width="match_parent"
+                android:orientation="vertical"
                 android:layout_height="wrap_content"
-                android:weightSum="4">
-
+                >
+                <Button
+                    android:id="@+id/btn_req"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:lines="1"
+                    android:text="@string/add_requirement"
+                    />
                 <TextView
                     android:id="@+id/title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_weight="3"
                     android:lines="3"
                     android:text="person_registration"
                     android:textSize="20dp" />
 
-                <Button
-                    android:id="@+id/btn_req"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:lines="2"
-                    android:text="@string/add_requirement"
-                     />
+
             </LinearLayout>
             <!--  <TextView
                   android:id="@+id/camp_title"

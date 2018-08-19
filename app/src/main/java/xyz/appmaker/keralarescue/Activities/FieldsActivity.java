@@ -3,8 +3,6 @@ package xyz.appmaker.keralarescue.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,12 +19,9 @@ import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,14 +30,14 @@ import xyz.appmaker.keralarescue.AppController;
 import xyz.appmaker.keralarescue.MainActivity;
 import xyz.appmaker.keralarescue.Models.Gender;
 import xyz.appmaker.keralarescue.Models.PersonsResponse;
-import xyz.appmaker.keralarescue.Models.States;
+import xyz.appmaker.keralarescue.Models.District;
 import xyz.appmaker.keralarescue.R;
 import xyz.appmaker.keralarescue.Room.Camp.CampNames;
 import xyz.appmaker.keralarescue.Room.CampDatabase;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataDao;
 import xyz.appmaker.keralarescue.Room.PersonData.PersonDataEntity;
 import xyz.appmaker.keralarescue.Tools.APIService;
-import xyz.appmaker.keralarescue.Tools.Misc;
+import xyz.appmaker.keralarescue.Tools.Config;
 import xyz.appmaker.keralarescue.Tools.PreferensHandler;
 
 public class FieldsActivity extends AppCompatActivity {
@@ -124,8 +119,8 @@ public class FieldsActivity extends AppCompatActivity {
         });
 
 
-        ArrayAdapter<States> districtAdapter = new ArrayAdapter<States>(this,
-                android.R.layout.simple_spinner_item, Misc.getStates());
+        ArrayAdapter<District> districtAdapter = new ArrayAdapter<District>(this,
+                android.R.layout.simple_spinner_item, Config.getDistricts());
         districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         districtSpn = (Spinner) findViewById(R.id.district);
 
@@ -139,8 +134,8 @@ public class FieldsActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (pref != null)
                     pref.setDistrictDef(position);
-                States states = (States) parent.getSelectedItem();
-                districtSelectedValue = states.getId();
+                District district = (District) parent.getSelectedItem();
+                districtSelectedValue = district.getId();
             }
 
             @Override

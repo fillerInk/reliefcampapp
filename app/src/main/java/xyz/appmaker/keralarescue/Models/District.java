@@ -1,11 +1,11 @@
 package xyz.appmaker.keralarescue.Models;
 
-public class States {
+public class District {
 
     private String id;
     private String name;
 
-    public States(String id, String name) {
+    public District(String id, String name) {
         this.id = id;
         this.name = name;
     }
