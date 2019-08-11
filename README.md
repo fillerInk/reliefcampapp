@@ -1,4 +1,4 @@
-# KeralaRescue.in Camps App 
+# KeralaRescue.in Relief Camps App 
 
 A simple app for rescue camp coordinators to enter information about accomodated individuals and supply requirements. Data is synced to [keralarescue.in](https://keralarescue.in/relief_camps)
 
